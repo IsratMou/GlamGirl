@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Product Details - GlamGirl{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row" id="productDetail">
+        <!-- JavaScript দিয়ে load হবে -->
+        <div class="text-center py-5">
+            <div class="spinner"></div>
+            <p>Loading product...</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Get product ID from Django template
+    const productId = {{ product_id }};
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        initProductDetailPage(productId);
+    });
+</script>
+{% endblock %}

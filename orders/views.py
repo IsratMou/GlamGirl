@@ -1,5 +1,5 @@
 # orders/views.py
-
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -21,6 +21,7 @@ def get_cart_by_session(request):
         return None
 
 
+@csrf_exempt
 @api_view(['POST'])
 def create_order(request):
     """
@@ -31,23 +32,23 @@ def create_order(request):
     serializer = CreateOrderSerializer(data=request.data)
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     # Cart নিয়ে আসো
     cart = get_cart_by_session(request)
     if not cart or not cart.items.exists():
         return Response(
-            {'error': 'Cart is empty'}, 
+            {'error': 'Cart is empty'},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     # Stock check করো
     for item in cart.items.all():
         if item.product.stock < item.quantity:
             return Response(
-                {'error': f'Not enough stock for {item.product.name}'}, 
+                {'error': f'Not enough stock for {item.product.name}'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-    
+
     # Transaction দিয়ে order create করো (একসাথে সব হবে অথবা কিছুই হবে না)
     with transaction.atomic():
         # Order create করো
@@ -61,9 +62,10 @@ def create_order(request):
             payment_method=serializer.validated_data['payment_method'],
             note=serializer.validated_data.get('note', ''),
             total_amount=cart.get_total(),
-            shipping_cost=60 if serializer.validated_data['city'].lower() != 'dhaka' else 0,
+            shipping_cost=60 if serializer.validated_data['city'].lower(
+            ) != 'dhaka' else 0,
         )
-        
+
         # Order items create করো ও stock কমাও
         for cart_item in cart.items.all():
             OrderItem.objects.create(
@@ -73,14 +75,14 @@ def create_order(request):
                 product_price=cart_item.product.price,
                 quantity=cart_item.quantity,
             )
-            
+
             # Stock কমাও
             cart_item.product.stock -= cart_item.quantity
             cart_item.product.save()
-        
+
         # Cart clear করো
         cart.items.all().delete()
-    
+
     # Response দাও
     order_serializer = OrderSerializer(order)
     return Response({
@@ -99,10 +101,10 @@ def order_detail(request, order_id):
         order = Order.objects.get(id=order_id)
     except Order.DoesNotExist:
         return Response(
-            {'error': 'Order not found'}, 
+            {'error': 'Order not found'},
             status=status.HTTP_404_NOT_FOUND
         )
-    
+
     serializer = OrderSerializer(order)
     return Response(serializer.data)
 
@@ -128,10 +130,10 @@ def track_order(request, order_id):
         order = Order.objects.get(id=order_id)
     except Order.DoesNotExist:
         return Response(
-            {'error': 'Order not found'}, 
+            {'error': 'Order not found'},
             status=status.HTTP_404_NOT_FOUND
         )
-    
+
     return Response({
         'order_id': order.id,
         'status': order.status,

@@ -1,0 +1,208 @@
+/* ============================================
+   GlamGirl - Custom Styles
+   ============================================ */
+
+/* Google Font */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Brand Colors */
+:root {
+    --pink: #e91e63;
+    --pink-dark: #c2185b;
+    --pink-light: #fce4ec;
+}
+
+/* Custom Button */
+.btn-pink {
+    background-color: var(--pink);
+    border-color: var(--pink);
+    color: white;
+}
+
+.btn-pink:hover {
+    background-color: var(--pink-dark);
+    border-color: var(--pink-dark);
+    color: white;
+}
+
+.btn-outline-pink {
+    border-color: var(--pink);
+    color: var(--pink);
+}
+
+.btn-outline-pink:hover {
+    background-color: var(--pink);
+    color: white;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--pink-light) 0%, #fff 100%);
+    padding: 80px 0;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--pink-dark);
+}
+
+/* Product Card */
+.product-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.product-card .card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+.product-card .card-body {
+    padding: 20px;
+}
+
+.product-card .product-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-card .product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--pink);
+}
+
+.product-card .old-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* Category Badge */
+.category-badge {
+    background-color: var(--pink-light);
+    color: var(--pink);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--pink);
+}
+
+/* Cart Page */
+.cart-item {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+}
+
+.cart-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Checkout Form */
+.checkout-form {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+/* Order Summary */
+.order-summary {
+    background-color: var(--pink-light);
+    padding: 30px;
+    border-radius: 15px;
+}
+
+/* Footer */
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--pink) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .product-card .card-img-top {
+        height: 200px;
+    }
+}
+
+/* Loading Spinner */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--pink);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Toast Notification */
+.toast-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #ddd;
+    margin-bottom: 20px;
+}

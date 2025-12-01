@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}GlamGirl - Beauty & Cosmetics{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1>Discover Your <span style="color: var(--pink);">Beauty</span></h1>
+                <p class="lead text-muted mb-4">
+                    Shop the best cosmetics and beauty products at amazing prices. 
+                    Free delivery in Dhaka!
+                </p>
+                <a href="/products/" class="btn btn-pink btn-lg me-2">
+                    <i class="bi bi-bag"></i> Shop Now
+                </a>
+                <a href="#featured" class="btn btn-outline-pink btn-lg">
+                    View Products
+                </a>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500" 
+                     alt="Beauty Products" 
+                     class="img-fluid rounded-4 shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title text-center">Shop by Category</h2>
+        <div class="row" id="categoriesContainer">
+            <!-- JavaScript দিয়ে load হবে -->
+            <div class="text-center">
+                <div class="spinner"></div>
+                <p>Loading categories...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="py-5 bg-light" id="featured">
+    <div class="container">
+        <h2 class="section-title text-center">Featured Products</h2>
+        <div class="row" id="featuredProducts">
+            <!-- JavaScript দিয়ে load হবে -->
+            <div class="text-center">
+                <div class="spinner"></div>
+                <p>Loading products...</p>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/products/" class="btn btn-pink btn-lg">
+                View All Products <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="p-4">
+                    <i class="bi bi-truck text-pink" style="font-size: 3rem; color: var(--pink);"></i>
+                    <h5 class="mt-3">Free Delivery</h5>
+                    <p class="text-muted">Free delivery in Dhaka city</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="p-4">
+                    <i class="bi bi-shield-check" style="font-size: 3rem; color: var(--pink);"></i>
+                    <h5 class="mt-3">100% Authentic</h5>
+                    <p class="text-muted">Guaranteed original products</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="p-4">
+                    <i class="bi bi-arrow-repeat" style="font-size: 3rem; color: var(--pink);"></i>
+                    <h5 class="mt-3">Easy Returns</h5>
+                    <p class="text-muted">7 days return policy</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="p-4">
+                    <i class="bi bi-headset" style="font-size: 3rem; color: var(--pink);"></i>
+                    <h5 class="mt-3">24/7 Support</h5>
+                    <p class="text-muted">Dedicated customer support</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initHomePage();
+    });
+</script>
+{% endblock %}
