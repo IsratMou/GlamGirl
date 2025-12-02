@@ -270,6 +270,7 @@ async function quickAddToCart(productId) {
     }
 }
 
+
 // ============================================
 // Page: HOME
 // ============================================
@@ -278,7 +279,6 @@ async function initHomePage() {
     console.log('Initializing Home Page...');
     
     try {
-        // Load featured products
         const products = await fetchProducts();
         const container = document.getElementById('featuredProducts');
         
@@ -290,7 +290,6 @@ async function initHomePage() {
             }
         }
         
-        // Load categories
         const categories = await fetchCategories();
         const catContainer = document.getElementById('categoriesContainer');
         
@@ -316,11 +315,12 @@ async function initHomePage() {
 }
 
 // ============================================
-// Page: PRODUCTS (with Category Filter)
+// Page: PRODUCTS (with All Filters)
 // ============================================
 
 let allProducts = [];
 let allCategories = [];
+let filteredProducts = [];
 
 async function initProductsPage() {
     console.log('Initializing Products Page...');
@@ -334,19 +334,105 @@ async function initProductsPage() {
         allProducts = await fetchProducts();
         allCategories = await fetchCategories();
         
-        // Render products based on category filter
+        // Initial filter
         if (categoryId) {
-            const filteredProducts = allProducts.filter(p => p.category == categoryId);
-            renderProducts(filteredProducts);
+            filteredProducts = allProducts.filter(p => p.category == categoryId);
         } else {
-            renderProducts(allProducts);
+            filteredProducts = [...allProducts];
         }
+        
+        // Render products
+        renderProducts(filteredProducts);
         
         // Render category filters
         renderCategoryFilters(categoryId);
         
+        // Setup event listeners for sorting and price filter
+        setupFilterListeners();
+        
     } catch (error) {
         console.error('Error initializing products page:', error);
+    }
+}
+
+function setupFilterListeners() {
+    // Sort dropdown listener
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            applyFilters();
+        });
+    }
+    
+    // Price range listeners
+    const priceRadios = document.querySelectorAll('input[name="priceRange"]');
+    priceRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            applyFilters();
+        });
+    });
+}
+
+function applyFilters() {
+    // Get selected category
+    const selectedCategory = document.querySelector('input[name="categoryFilter"]:checked');
+    const categoryId = selectedCategory ? selectedCategory.value : '';
+    
+    // Get selected price range
+    const selectedPrice = document.querySelector('input[name="priceRange"]:checked');
+    const priceRange = selectedPrice ? selectedPrice.id : 'priceAll';
+    
+    // Get selected sort
+    const sortSelect = document.getElementById('sortSelect');
+    const sortValue = sortSelect ? sortSelect.value : 'newest';
+    
+    // Start with all products
+    let results = [...allProducts];
+    
+    // Filter by category
+    if (categoryId) {
+        results = results.filter(p => p.category == categoryId);
+    }
+    
+    // Filter by price range
+    results = filterByPriceRange(results, priceRange);
+    
+    // Sort products
+    results = sortProducts(results, sortValue);
+    
+    // Update filtered products
+    filteredProducts = results;
+    
+    // Render
+    renderProducts(filteredProducts);
+}
+
+function filterByPriceRange(products, priceRange) {
+    switch(priceRange) {
+        case 'price1': // Under ৳500
+            return products.filter(p => parseFloat(p.price) < 500);
+        case 'price2': // ৳500 - ৳1000
+            return products.filter(p => parseFloat(p.price) >= 500 && parseFloat(p.price) <= 1000);
+        case 'price3': // Above ৳1000
+            return products.filter(p => parseFloat(p.price) > 1000);
+        default: // All prices
+            return products;
+    }
+}
+
+function sortProducts(products, sortValue) {
+    const sorted = [...products];
+    
+    switch(sortValue) {
+        case 'price_low':
+            return sorted.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        case 'price_high':
+            return sorted.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        case 'name':
+            return sorted.sort((a, b) => a.name.localeCompare(b.name));
+        case 'newest':
+        default:
+            return sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     }
 }
 
@@ -358,7 +444,7 @@ function renderProducts(products) {
         if (products && products.length > 0) {
             container.innerHTML = products.map(p => createProductCard(p)).join('');
         } else {
-            container.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No products found in this category.</p></div>';
+            container.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No products found matching your criteria.</p></div>';
         }
     }
     
@@ -383,7 +469,7 @@ function renderCategoryFilters(selectedCategoryId = null) {
                 <input class="form-check-input" type="radio" name="categoryFilter" 
                        id="cat${cat.id}" value="${cat.id}" 
                        ${selectedCategoryId == cat.id ? 'checked' : ''}
-                       onchange="filterByCategory(${cat.id})">
+                       onchange="filterByCategory('${cat.id}')">
                 <label class="form-check-label" for="cat${cat.id}">${cat.name}</label>
             </div>
         `).join('');
@@ -391,24 +477,44 @@ function renderCategoryFilters(selectedCategoryId = null) {
 }
 
 function filterByCategory(categoryId) {
+    // Update URL
     if (categoryId) {
-        const filteredProducts = allProducts.filter(p => p.category == categoryId);
-        renderProducts(filteredProducts);
         window.history.pushState({}, '', `/products/?category=${categoryId}`);
     } else {
-        renderProducts(allProducts);
         window.history.pushState({}, '', '/products/');
     }
+    
+    // Apply all filters
+    applyFilters();
 }
 
 function clearFilters() {
+    // Reset category filter
     const catAllRadio = document.getElementById('catAll');
     if (catAllRadio) {
         catAllRadio.checked = true;
     }
-    renderProducts(allProducts);
+    
+    // Reset price filter
+    const priceAllRadio = document.getElementById('priceAll');
+    if (priceAllRadio) {
+        priceAllRadio.checked = true;
+    }
+    
+    // Reset sort
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) {
+        sortSelect.value = 'newest';
+    }
+    
+    // Update URL
     window.history.pushState({}, '', '/products/');
+    
+    // Show all products
+    filteredProducts = [...allProducts];
+    renderProducts(filteredProducts);
 }
+
 
 // ============================================
 // Page: PRODUCT DETAIL
