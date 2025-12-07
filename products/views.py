@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.shortcuts import render
+
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 
@@ -53,3 +54,19 @@ def products_by_category(request, category_id):
     products = Product.objects.filter(category_id=category_id, is_active=True)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
+
+
+# 🔥 নতুন: Flash Sale Products List
+class FlashSaleListView(generics.ListAPIView):
+    """
+    শুধু Flash Sale products দেখাবে।
+    Simple version: is_flash_sale=True & is_active=True
+    (চাইলে পরে time window অনুযায়ী filter করা যাবে)
+    """
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        return Product.objects.filter(
+            is_active=True,
+            is_flash_sale=True
+        )

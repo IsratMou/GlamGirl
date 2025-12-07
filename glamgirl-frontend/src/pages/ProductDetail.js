@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaCartPlus, FaMinus, FaPlus, FaTruck, FaShieldAlt } from 'react-icons/fa';
+import {
+    FaCartPlus,
+    FaMinus,
+    FaPlus,
+    FaTruck,
+    FaShieldAlt,
+} from 'react-icons/fa';
 import { getProduct } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { toast } from 'react-toastify';
@@ -14,6 +20,7 @@ const ProductDetail = () => {
 
     useEffect(() => {
         fetchProduct();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     const fetchProduct = async () => {
@@ -58,20 +65,40 @@ const ProductDetail = () => {
         return (
             <div className="container py-5 text-center">
                 <h4>Product not found</h4>
-                <Link to="/products" className="btn btn-pink mt-3">Back to Products</Link>
+                <Link to="/products" className="btn btn-pink mt-3">
+                    Back to Products
+                </Link>
             </div>
         );
     }
 
-    const imageUrl = product.image || 'https://via.placeholder.com/500x500?text=No+Image';
+    const imageUrl =
+        product.image ||
+        'https://via.placeholder.com/500x500?text=No+Image';
+
+    // ✅ Flash sale logic (frontend display only)
+    const hasFlashDiscount =
+        product.is_flash_sale &&
+        product.flash_price &&
+        Number(product.flash_price) < Number(product.price);
+
+    const currentPrice = hasFlashDiscount
+        ? Number(product.flash_price)
+        : Number(product.price);
+
+    const originalPrice = Number(product.price);
 
     return (
         <div className="container py-5">
             {/* Breadcrumb */}
             <nav aria-label="breadcrumb" className="mb-4">
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                    <li className="breadcrumb-item"><Link to="/products">Products</Link></li>
+                    <li className="breadcrumb-item">
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li className="breadcrumb-item">
+                        <Link to="/products">Products</Link>
+                    </li>
                     <li className="breadcrumb-item active">{product.name}</li>
                 </ol>
             </nav>
@@ -80,17 +107,47 @@ const ProductDetail = () => {
                 {/* Product Image */}
                 <div className="col-md-6 mb-4">
                     <div className="product-detail-image">
-                        <img src={imageUrl} alt={product.name} className="img-fluid rounded-4 shadow" />
+                        <img
+                            src={imageUrl}
+                            alt={product.name}
+                            className="img-fluid rounded-4 shadow"
+                        />
                     </div>
                 </div>
 
                 {/* Product Info */}
                 <div className="col-md-6">
-                    <span className="category-badge mb-3">{product.category_name}</span>
+                    <span className="category-badge mb-3">
+                        {product.category_name}
+                    </span>
+                    {hasFlashDiscount && (
+                        <span className="badge bg-danger ms-2">
+                            Flash Sale
+                        </span>
+                    )}
                     <h1 className="product-detail-title">{product.name}</h1>
-                    
+
+                    {/* ✅ Price display with flash price */}
                     <div className="product-detail-price my-3">
-                        ৳{parseFloat(product.price).toFixed(0)}
+                        {hasFlashDiscount ? (
+                            <>
+                                {/* main flash price (pink, big) */}
+                                <span className="me-3">
+                                    ৳{currentPrice.toFixed(0)}
+                                </span>
+                                {/* original price কাটা, ছোট */}
+                                <span className="text-muted text-decoration-line-through fs-5">
+                                    ৳{originalPrice.toFixed(0)}
+                                </span>
+                                {product.discount_percent > 0 && (
+                                    <span className="badge bg-danger ms-2">
+                                        -{product.discount_percent}%
+                                    </span>
+                                )}
+                            </>
+                        ) : (
+                            <>৳{originalPrice.toFixed(0)}</>
+                        )}
                     </div>
 
                     <p className="text-muted mb-4">{product.description}</p>
@@ -98,9 +155,13 @@ const ProductDetail = () => {
                     {/* Stock Status */}
                     <div className="mb-4">
                         {product.stock > 0 ? (
-                            <span className="badge bg-success">In Stock ({product.stock} available)</span>
+                            <span className="badge bg-success">
+                                In Stock ({product.stock} available)
+                            </span>
                         ) : (
-                            <span className="badge bg-danger">Out of Stock</span>
+                            <span className="badge bg-danger">
+                                Out of Stock
+                            </span>
                         )}
                     </div>
 
@@ -109,11 +170,19 @@ const ProductDetail = () => {
                         <div className="mb-4">
                             <label className="form-label">Quantity:</label>
                             <div className="quantity-selector">
-                                <button className="btn btn-outline-secondary" onClick={decreaseQty}>
+                                <button
+                                    className="btn btn-outline-secondary"
+                                    onClick={decreaseQty}
+                                >
                                     <FaMinus />
                                 </button>
-                                <span className="quantity-value">{quantity}</span>
-                                <button className="btn btn-outline-secondary" onClick={increaseQty}>
+                                <span className="quantity-value">
+                                    {quantity}
+                                </span>
+                                <button
+                                    className="btn btn-outline-secondary"
+                                    onClick={increaseQty}
+                                >
                                     <FaPlus />
                                 </button>
                             </div>
@@ -121,7 +190,7 @@ const ProductDetail = () => {
                     )}
 
                     {/* Add to Cart Button */}
-                    <button 
+                    <button
                         className="btn btn-pink btn-lg w-100 mb-4"
                         onClick={handleAddToCart}
                         disabled={product.stock <= 0}

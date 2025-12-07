@@ -64,15 +64,17 @@ html {
 }
 
 body {
-    /* Utility text color for pink theme (for icons etc.) */
-.text-pink {
-    color: var(--pink-500) !important;
-}
+
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: #fafafa;
     color: var(--text-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+}
+
+    /* Utility text color for pink theme (for icons etc.) */
+.text-pink {
+    color: var(--pink-500) !important;
 }
 
 /* Focus Outline - Accessibility */
@@ -1922,5 +1924,330 @@ footer a:hover {
 
     .simple-dot.active {
         width: 20px;
+    }
+}
+
+/* ============================================
+   ⚡ FLASH SALE SECTION (Daraz-style)
+   ============================================ */
+
+.flash-sale-section {
+    padding: 20px 0 28px;
+    background: #fff7fb;
+    border-top: 1px solid #ffe4ef;
+    border-bottom: 1px solid #ffe4ef;
+}
+
+/* Header */
+.flash-sale-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.flash-sale-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.flash-sale-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.flash-sale-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.flash-sale-text {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.flash-sale-subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ef4444;
+    background-color: #fee2e2;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+/* Timer */
+.flash-sale-timer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.timer-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.timer-boxes {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.timer-box {
+    min-width: 30px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background-color: #111827;
+    color: #f9fafb;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.timer-sep {
+    font-weight: 700;
+    color: #4b5563;
+}
+
+/* Right side (Shop more + arrows) */
+.flash-sale-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.flash-sale-view-all {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--pink-600);
+    text-decoration: none;
+}
+
+.flash-sale-view-all:hover {
+    color: var(--pink-700);
+}
+
+.flash-sale-arrows {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.flash-arrow-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #fecaca;
+    background-color: #ffffff;
+    color: #f97316;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.flash-arrow-btn:hover {
+    background-color: #f97316;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* Slider */
+.flash-sale-slider-wrapper {
+    position: relative;
+}
+
+.flash-sale-slider {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scroll-behavior: smooth;
+}
+
+/* scrollbar thin / hidden style */
+.flash-sale-slider::-webkit-scrollbar {
+    height: 6px;
+}
+
+.flash-sale-slider::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.flash-sale-slider::-webkit-scrollbar-thumb {
+    background: #fecaca;
+    border-radius: 999px;
+}
+
+/* Card (Daraz-style small box) */
+.flash-sale-card {
+    flex: 0 0 190px;   /* আগে 170px ছিল → এখন একটু চওড়া */
+    max-width: 190px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #f3f4f6;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.flash-sale-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+    border-color: #fecaca;
+}
+
+/* Image */
+.flash-sale-image-wrapper {
+    position: relative;
+    background-color: #ffe4f4;
+}
+
+.flash-sale-image {
+    width: 100%;
+    height: 160px;     /* আগে 140px → এখন একটু লম্বা */
+    object-fit: cover;
+}
+
+/* Discount badge top-left */
+.flash-sale-discount-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 999px;
+}
+
+/* Info area */
+.flash-sale-info {
+    padding: 6px 8px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.flash-sale-name {
+    font-size: 13px;   /* আগে 12px */
+    font-weight: 500;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.4;
+    max-height: 2.8em;
+    overflow: hidden;
+}
+/* Price row */
+.flash-sale-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.flash-sale-price {
+    font-size: 15px;   /* আগে 14px */
+    font-weight: 700;
+    color: #f97316;
+}
+
+.flash-sale-original {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+/* Stock bar row */
+.flash-sale-stock-row {
+    margin-top: 2px;
+}
+
+.stock-bar {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background-color: #fee2e2;
+    overflow: hidden;
+    margin-bottom: 2px;
+}
+
+.stock-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #f97316, #ec4899);
+    width: 50%;
+}
+
+.stock-text {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .flash-sale-header {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .flash-sale-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .flash-sale-right {
+        align-self: stretch;
+        justify-content: space-between;
+    }
+
+    .flash-sale-slider {
+        gap: 8px;
+    }
+
+    .flash-sale-card {
+        flex: 0 0 170px;   /* আগে 150px, এখন mobile-e o kichuটা বড় */
+        max-width: 170px;
+    }
+
+    .flash-sale-image {
+        height: 150px;
+    }
+}
+
+@media (max-width: 576px) {
+    .flash-sale-section {
+        padding: 18px 0 24px;
+    }
+
+    .flash-sale-card {
+        flex: 0 0 155px;
+        max-width: 155px;
+    }
+
+    .flash-sale-image {
+        height: 140px;
+    }
+
+    .flash-sale-info {
+        padding: 6px 6px 8px;
     }
 }

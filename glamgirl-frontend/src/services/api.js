@@ -15,12 +15,18 @@ const api = axios.create({
 export const getCategories = () => api.get('/products/categories/');
 export const getProducts = () => api.get('/products/');
 export const getProduct = (id) => api.get(`/products/${id}/`);
-export const getProductsByCategory = (categoryId) => api.get(`/products/category/${categoryId}/`);
+export const getProductsByCategory = (categoryId) =>
+    api.get(`/products/category/${categoryId}/`);
+
+// 🔥 Flash Sale API
+export const getFlashSaleProducts = () => api.get('/products/flash-sale/');
 
 // Cart API
 export const getCart = () => api.get('/cart/');
-export const addToCart = (productId, quantity = 1) => api.post('/cart/add/', { product_id: productId, quantity });
-export const updateCartItem = (itemId, quantity) => api.put(`/cart/update/${itemId}/`, { quantity });
+export const addToCart = (productId, quantity = 1) =>
+    api.post('/cart/add/', { product_id: productId, quantity });
+export const updateCartItem = (itemId, quantity) =>
+    api.put(`/cart/update/${itemId}/`, { quantity });
 export const removeFromCart = (itemId) => api.delete(`/cart/remove/${itemId}/`);
 export const clearCart = () => api.delete('/cart/clear/');
 
