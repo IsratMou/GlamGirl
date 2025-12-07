@@ -200,48 +200,60 @@ const Home = () => {
 
                     {loading ? (
                         <div className="text-center py-5">
-                            <div
-                                className="spinner-border text-pink"
-                                role="status"
-                            >
-                                <span className="visually-hidden">
-                                    Loading...
-                                </span>
+                            <div className="spinner-border text-pink" role="status">
+                                <span className="visually-hidden">Loading...</span>
                             </div>
                         </div>
                     ) : (
                         <div className="row g-4">
-                            {categories.slice(0, 8).map((category) => (
-                                <div
-                                    key={category.id}
-                                    className="col-xl-3 col-lg-4 col-md-6"
-                                >
-                                    <Link
-                                        to={`/products?category=${category.id}`}
-                                        className="text-decoration-none"
+                            {categories.slice(0, 8).map((category) => {
+                                const imageUrl = category.image;
+                                const initial =
+                                    (category.name || '').charAt(0).toUpperCase() || '?';
+
+                                return (
+                                    <div
+                                        key={category.id}
+                                        className="col-xl-3 col-lg-4 col-md-6"
                                     >
-                                        <div className="category-card h-100">
-                                            <div className="category-icon">
-                                                💎
+                                        <Link
+                                            to={`/products?category=${category.id}`}
+                                            className="text-decoration-none"
+                                        >
+                                            <div className="category-card cute-category-card h-100">
+                                                {/* 🌸 PHOTO FRAME */}
+                                                <div className="category-photo-frame">
+                                                    <div className="category-photo-inner">
+                                                        {imageUrl ? (
+                                                            <img
+                                                                src={imageUrl}
+                                                                alt={category.name}
+                                                                className="category-photo-image"
+                                                            />
+                                                        ) : (
+                                                            <span className="category-photo-letter">
+                                                                {initial}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <h5 className="fw-semibold mb-1">
+                                                    {category.name}
+                                                </h5>
+                                                <p className="text-muted small mb-0">
+                                                    Shop Collection
+                                                </p>
                                             </div>
-                                            <h5 className="fw-semibold">
-                                                {category.name}
-                                            </h5>
-                                            <p className="text-muted small mb-0">
-                                                Shop Collection
-                                            </p>
-                                        </div>
-                                    </Link>
-                                </div>
-                            ))}
+                                        </Link>
+                                    </div>
+                                );
+                            })}
                         </div>
                     )}
 
                     <div className="text-center mt-5">
-                        <Link
-                            to="/products"
-                            className="btn btn-outline-pink btn-lg"
-                        >
+                        <Link to="/products" className="btn btn-outline-pink btn-lg">
                             View All Categories
                         </Link>
                     </div>

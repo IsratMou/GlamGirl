@@ -5,6 +5,13 @@ from django.utils import timezone
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
+    # 🔥 নতুন: Category image (admin থেকে upload করবে)
+    image = models.ImageField(
+        upload_to='categories/',
+        blank=True,
+        null=True,
+        help_text="Category thumbnail image"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -54,7 +61,6 @@ class Product(models.Model):
         if not self.is_flash_sale:
             return False
 
-        # Flash price থাকতে হবে এবং normal price এর চেয়ে কম হতে হবে
         if self.flash_price is None or self.flash_price >= self.price:
             return False
 
@@ -66,7 +72,7 @@ class Product(models.Model):
 
         return True
 
-    # ✅ এখনকার effective price (flash হলে flash_price, না হলে normal price)
+    # ✅ effective price (flash হলে flash_price, না হলে normal price)
     def get_current_price(self):
         if self.is_flash_sale_active():
             return self.flash_price
