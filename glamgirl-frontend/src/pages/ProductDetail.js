@@ -6,6 +6,7 @@ import {
     FaPlus,
     FaTruck,
     FaShieldAlt,
+    FaBolt,
 } from 'react-icons/fa';
 import { getProduct } from '../services/api';
 import { useCart } from '../context/CartContext';
@@ -76,7 +77,7 @@ const ProductDetail = () => {
         product.image ||
         'https://via.placeholder.com/500x500?text=No+Image';
 
-    // ✅ Flash sale logic (frontend display only)
+    // ✅ Flash sale / discount logic
     const hasFlashDiscount =
         product.is_flash_sale &&
         product.flash_price &&
@@ -85,14 +86,17 @@ const ProductDetail = () => {
     const currentPrice = hasFlashDiscount
         ? Number(product.flash_price)
         : Number(product.price);
-
     const originalPrice = Number(product.price);
+    const discountPercent =
+        hasFlashDiscount && product.discount_percent
+            ? product.discount_percent
+            : 0;
 
     return (
-        <div className="container py-5">
+        <div className="container py-4 product-detail-page">
             {/* Breadcrumb */}
-            <nav aria-label="breadcrumb" className="mb-4">
-                <ol className="breadcrumb">
+            <nav aria-label="breadcrumb" className="mb-3">
+                <ol className="breadcrumb small">
                     <li className="breadcrumb-item">
                         <Link to="/">Home</Link>
                     </li>
@@ -103,57 +107,64 @@ const ProductDetail = () => {
                 </ol>
             </nav>
 
-            <div className="row">
+            <div className="row gy-4">
                 {/* Product Image */}
-                <div className="col-md-6 mb-4">
+                <div className="col-md-5">
                     <div className="product-detail-image">
                         <img
                             src={imageUrl}
                             alt={product.name}
-                            className="img-fluid rounded-4 shadow"
+                            className="img-fluid"
+                            loading="lazy"
                         />
+                        {hasFlashDiscount && (
+                            <span className="product-detail-flash-pill">
+                                <FaBolt className="me-1" />
+                                Flash Deal
+                            </span>
+                        )}
                     </div>
                 </div>
 
                 {/* Product Info */}
-                <div className="col-md-6">
-                    <span className="category-badge mb-3">
+                <div className="col-md-7">
+                    <span className="category-badge mb-2">
                         {product.category_name}
                     </span>
-                    {hasFlashDiscount && (
-                        <span className="badge bg-danger ms-2">
-                            Flash Sale
-                        </span>
-                    )}
+
                     <h1 className="product-detail-title">{product.name}</h1>
 
-                    {/* ✅ Price display with flash price */}
-                    <div className="product-detail-price my-3">
-                        {hasFlashDiscount ? (
-                            <>
-                                {/* main flash price (pink, big) */}
-                                <span className="me-3">
-                                    ৳{currentPrice.toFixed(0)}
-                                </span>
-                                {/* original price কাটা, ছোট */}
-                                <span className="text-muted text-decoration-line-through fs-5">
-                                    ৳{originalPrice.toFixed(0)}
-                                </span>
-                                {product.discount_percent > 0 && (
-                                    <span className="badge bg-danger ms-2">
-                                        -{product.discount_percent}%
-                                    </span>
-                                )}
-                            </>
-                        ) : (
-                            <>৳{originalPrice.toFixed(0)}</>
+                    {/* Rating placeholder */}
+                    <div className="product-detail-rating mb-2">
+                        <span className="badge bg-warning text-dark me-2">
+                            ★ 4.5
+                        </span>
+                        <small className="text-muted">(120 reviews)</small>
+                    </div>
+
+                    {/* ✅ Price row */}
+                    <div className="product-detail-price-row my-3">
+                        <span className="product-detail-price-main">
+                            ৳{currentPrice.toFixed(0)}
+                        </span>
+                        {hasFlashDiscount && (
+                            <span className="product-detail-price-old">
+                                ৳{originalPrice.toFixed(0)}
+                            </span>
+                        )}
+                        {discountPercent > 0 && (
+                            <span className="product-detail-discount-badge">
+                                -{discountPercent}%
+                            </span>
                         )}
                     </div>
 
-                    <p className="text-muted mb-4">{product.description}</p>
+                    <p className="text-muted mb-3 product-detail-desc">
+                        {product.description}
+                    </p>
 
                     {/* Stock Status */}
-                    <div className="mb-4">
+                    <div className="mb-3">
                         {product.stock > 0 ? (
                             <span className="badge bg-success">
                                 In Stock ({product.stock} available)
@@ -167,8 +178,8 @@ const ProductDetail = () => {
 
                     {/* Quantity */}
                     {product.stock > 0 && (
-                        <div className="mb-4">
-                            <label className="form-label">Quantity:</label>
+                        <div className="mb-3">
+                            <label className="form-label small">Quantity</label>
                             <div className="quantity-selector">
                                 <button
                                     className="btn btn-outline-secondary"
@@ -191,7 +202,7 @@ const ProductDetail = () => {
 
                     {/* Add to Cart Button */}
                     <button
-                        className="btn btn-pink btn-lg w-100 mb-4"
+                        className="btn btn-pink btn-lg w-100 mb-3"
                         onClick={handleAddToCart}
                         disabled={product.stock <= 0}
                     >
@@ -200,17 +211,17 @@ const ProductDetail = () => {
                     </button>
 
                     {/* Features */}
-                    <div className="row">
+                    <div className="row g-2 product-detail-extra">
                         <div className="col-6">
-                            <div className="d-flex align-items-center text-muted">
+                            <div className="d-flex align-items-center text-muted small">
                                 <FaTruck className="me-2 text-pink" />
-                                <small>Free Delivery in Dhaka</small>
+                                <span>Free Delivery in Dhaka</span>
                             </div>
                         </div>
                         <div className="col-6">
-                            <div className="d-flex align-items-center text-muted">
+                            <div className="d-flex align-items-center text-muted small">
                                 <FaShieldAlt className="me-2 text-pink" />
-                                <small>100% Authentic</small>
+                                <span>100% Authentic</span>
                             </div>
                         </div>
                     </div>

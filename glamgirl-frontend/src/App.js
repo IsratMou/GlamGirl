@@ -24,7 +24,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Wishlist from './pages/Wishlist';
-
+import FlashSalePage from './pages/FlashSalePage'; 
 function App() {
     return (
         <CartProvider>
@@ -41,6 +41,7 @@ function App() {
                                 <Route path="/cart" element={<Cart />} />
                                 <Route path="/checkout" element={<Checkout />} />
                                 <Route path="/wishlist" element={<Wishlist />} />
+                                <Route path="/flash-sale" element={<FlashSalePage />} />  {/* 🔥 নতুন */}
                             </Routes>
                         </main>
                         

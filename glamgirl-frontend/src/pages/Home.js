@@ -26,6 +26,7 @@ const Home = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [showAllCategories, setShowAllCategories] = useState(false);
 
     // Products + Categories load
     useEffect(() => {
@@ -111,6 +112,10 @@ const Home = () => {
         setCurrentSlide(index);
     };
 
+    const visibleCategories = showAllCategories
+        ? categories
+        : categories.slice(0, 6);
+
     return (
         <>
             {/* 🔔 Marquee Banner – Navbar এর ঠিক নিচে */}
@@ -119,7 +124,10 @@ const Home = () => {
                     <span>
                         ✨ WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
                         WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
-                        WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
+                    </span>
+                    {/* দ্বিতীয় span – continuous scroll এর জন্য */}
+                    <span>
+                        ✨ WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
                         WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
                     </span>
                 </div>
@@ -136,10 +144,13 @@ const Home = () => {
                                 className={`simple-banner-slide ${
                                     index === currentSlide ? 'active' : ''
                                 }`}
-                                style={{
-                                    backgroundImage: `url(${banner.image})`,
-                                }}
                             >
+                                <img
+                                    src={banner.image}
+                                    alt="GlamGirl banner"
+                                    className="hero-banner-img"
+                                    loading="lazy"
+                                />
                                 {/* Single Button - Bottom Center */}
                                 <div className="simple-banner-button">
                                     <Link
@@ -195,7 +206,7 @@ const Home = () => {
             <section className="py-5">
                 <div className="container">
                     <h2 className="section-title category-section-title text-center mb-2">
-                            Shop by Category
+                        Shop by Category
                     </h2>
                     <p className="category-section-subtitle text-center text-muted mb-5">
                         Explore your favourite beauty collections
@@ -203,60 +214,89 @@ const Home = () => {
 
                     {loading ? (
                         <div className="text-center py-5">
-                            <div className="spinner-border text-pink" role="status">
-                                <span className="visually-hidden">Loading...</span>
+                            <div
+                                className="spinner-border text-pink"
+                                role="status"
+                            >
+                                <span className="visually-hidden">
+                                    Loading...
+                                </span>
                             </div>
                         </div>
                     ) : (
-                        <div className="row g-4">
-                            {categories.slice(0, 8).map((category) => {
-                                const imageUrl = category.image;
-                                const initial =
-                                    (category.name || '').charAt(0).toUpperCase() || '?';
+                        <>
+                            <div className="row g-3 category-row">
+                                {visibleCategories.map((category) => {
+                                    const imageUrl = category.image;
+                                    const initial =
+                                        (category.name || '')
+                                            .charAt(0)
+                                            .toUpperCase() || '?';
 
-                                return (
-                                    <div
-                                        key={category.id}
-                                        className="col-xl-3 col-lg-4 col-md-6"
-                                    >
-                                        <Link
-                                            to={`/products?category=${category.id}`}
-                                            className="text-decoration-none"
+                                    return (
+                                        <div
+                                            key={category.id}
+                                            className="col-4 col-sm-3 col-md-3 col-lg-2"
                                         >
-                                            <div className="category-card cute-category-card h-100">
-                                                {/* 🌸 PHOTO FRAME */}
-                                                <div className="category-photo-frame">
-                                                    <div className="category-photo-inner">
-                                                        {imageUrl ? (
-                                                            <img
-                                                                src={imageUrl}
-                                                                alt={category.name}
-                                                                className="category-photo-image"
-                                                            />
-                                                        ) : (
-                                                            <span className="category-photo-letter">
-                                                                {initial}
-                                                            </span>
-                                                        )}
+                                            <Link
+                                                to={`/products?category=${category.id}`}
+                                                className="text-decoration-none"
+                                            >
+                                                <div className="category-card cute-category-card h-100">
+                                                    <div className="category-photo-frame">
+                                                        <div className="category-photo-inner">
+                                                            {imageUrl ? (
+                                                                <img
+                                                                    src={imageUrl}
+                                                                    alt={
+                                                                        category.name
+                                                                    }
+                                                                    className="category-photo-image"
+                                                                    loading="lazy"
+                                                                />
+                                                            ) : (
+                                                                <span className="category-photo-letter">
+                                                                    {initial}
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <h5 className="category-name-text mb-1">
-                                                    {category.name}
-                                                </h5>
-                                                <p className="text-muted small mb-0">
-                                                    Shop Collection
-                                                </p>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                                                    <h5 className="category-name-text mb-1">
+                                                        {category.name}
+                                                    </h5>
+                                                    <p className="text-muted small mb-0">
+                                                        Shop Collection
+                                                    </p>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Show more button */}
+                            {!showAllCategories && categories.length > 6 && (
+                                <div className="text-center mt-3">
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-pink btn-sm px-4"
+                                        onClick={() =>
+                                            setShowAllCategories(true)
+                                        }
+                                    >
+                                        Show more
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
 
-                    <div className="text-center mt-5">
-                        <Link to="/products" className="btn btn-outline-pink btn-lg">
+                    <div className="text-center mt-4">
+                        <Link
+                            to="/products"
+                            className="btn btn-outline-pink btn-lg"
+                        >
                             View All Categories
                         </Link>
                     </div>
@@ -288,7 +328,7 @@ const Home = () => {
                         </div>
                     ) : (
                         <>
-                            <div className="row g-4">
+                            <div className="row g-3">
                                 {products.slice(0, 8).map((product) => (
                                     <ProductCard
                                         key={product.id}

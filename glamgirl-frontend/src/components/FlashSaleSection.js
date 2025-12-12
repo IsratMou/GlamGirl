@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaBolt, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaBolt } from 'react-icons/fa';
 import { getFlashSaleProducts } from '../services/api';
 
 const FlashSaleSection = () => {
@@ -8,7 +8,6 @@ const FlashSaleSection = () => {
     const [loading, setLoading] = useState(true);
     const [endTime, setEndTime] = useState(null);
     const [timeLeft, setTimeLeft] = useState(null);
-    const sliderRef = useRef(null);
 
     // Flash sale products load
     useEffect(() => {
@@ -82,20 +81,13 @@ const FlashSaleSection = () => {
         return () => clearInterval(interval);
     }, [endTime]);
 
-    const scrollLeft = () => {
-        if (!sliderRef.current) return;
-        sliderRef.current.scrollBy({ left: -600, behavior: 'smooth' });
-    };
-
-    const scrollRight = () => {
-        if (!sliderRef.current) return;
-        sliderRef.current.scrollBy({ left: 600, behavior: 'smooth' });
-    };
-
     // কোনো flash sale না থাকলে section hide
     if (!loading && products.length === 0) {
         return null;
     }
+
+    // Home page এ শুধু প্রথম 6টা দেখাবো (grid), scrollbar/slider নেই
+    const visibleProducts = products.slice(0, 6);
 
     return (
         <section className="flash-sale-section">
@@ -133,27 +125,10 @@ const FlashSaleSection = () => {
                     </div>
 
                     <div className="flash-sale-right">
-                        <Link to="/products" className="flash-sale-view-all">
+                        {/* এখন এই Shop more → আলাদা Flash Sale পেজে */}
+                        <Link to="/flash-sale" className="flash-sale-view-all">
                             Shop more
                         </Link>
-                        <div className="flash-sale-arrows">
-                            <button
-                                type="button"
-                                className="flash-arrow-btn"
-                                onClick={scrollLeft}
-                                aria-label="Scroll left"
-                            >
-                                <FaChevronLeft />
-                            </button>
-                            <button
-                                type="button"
-                                className="flash-arrow-btn"
-                                onClick={scrollRight}
-                                aria-label="Scroll right"
-                            >
-                                <FaChevronRight />
-                            </button>
-                        </div>
                     </div>
                 </div>
 
@@ -165,89 +140,87 @@ const FlashSaleSection = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="flash-sale-slider-wrapper">
-                        <div className="flash-sale-slider" ref={sliderRef}>
-                            {products.map((product) => {
-                                const hasDiscount =
-                                    product.flash_price &&
-                                    Number(product.flash_price) <
-                                        Number(product.price);
+                    <div className="flash-sale-slider">
+                        {visibleProducts.map((product) => {
+                            const hasDiscount =
+                                product.flash_price &&
+                                Number(product.flash_price) <
+                                    Number(product.price);
 
-                                const price = hasDiscount
-                                    ? Number(product.flash_price)
-                                    : Number(product.price);
+                            const price = hasDiscount
+                                ? Number(product.flash_price)
+                                : Number(product.price);
 
-                                const originalPrice = Number(product.price);
+                            const originalPrice = Number(product.price);
 
-                                const discountPercent =
-                                    hasDiscount && product.discount_percent
-                                        ? product.discount_percent
-                                        : 0;
+                            const discountPercent =
+                                hasDiscount && product.discount_percent
+                                    ? product.discount_percent
+                                    : 0;
 
-                                const stock = product.stock || 0;
-                                // demo calculation: stock কম হলে bar ছোট হবে
-                                const stockPercent = Math.max(
-                                    8,
-                                    Math.min(100, stock * 7)
-                                );
+                            const stock = product.stock || 0;
+                            const stockPercent = Math.max(
+                                8,
+                                Math.min(100, stock * 7)
+                            );
 
-                                const imageUrl =
-                                    product.image ||
-                                    'https://via.placeholder.com/300x300?text=Product';
+                            const imageUrl =
+                                product.image ||
+                                'https://via.placeholder.com/300x300?text=Product';
 
-                                return (
-                                    <Link
-                                        key={product.id}
-                                        to={`/product/${product.id}`}
-                                        className="flash-sale-card"
-                                    >
-                                        <div className="flash-sale-image-wrapper">
-                                            <img
-                                                src={imageUrl}
-                                                alt={product.name}
-                                                className="flash-sale-image"
-                                            />
-                                            {discountPercent > 0 && (
-                                                <span className="flash-sale-discount-badge">
-                                                    -{discountPercent}%
+                            return (
+                                <Link
+                                    key={product.id}
+                                    to={`/product/${product.id}`}
+                                    className="flash-sale-card"
+                                >
+                                    <div className="flash-sale-image-wrapper">
+                                        <img
+                                            src={imageUrl}
+                                            alt={product.name}
+                                            className="flash-sale-image"
+                                            loading="lazy"
+                                        />
+                                        {discountPercent > 0 && (
+                                            <span className="flash-sale-discount-badge">
+                                                -{discountPercent}%
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div className="flash-sale-info">
+                                        <p className="flash-sale-name">
+                                            {product.name}
+                                        </p>
+
+                                        <div className="flash-sale-price-row">
+                                            <span className="flash-sale-price">
+                                                ৳{price.toFixed(0)}
+                                            </span>
+                                            {hasDiscount && (
+                                                <span className="flash-sale-original">
+                                                    ৳{originalPrice.toFixed(0)}
                                                 </span>
                                             )}
                                         </div>
 
-                                        <div className="flash-sale-info">
-                                            <p className="flash-sale-name">
-                                                {product.name}
-                                            </p>
-
-                                            <div className="flash-sale-price-row">
-                                                <span className="flash-sale-price">
-                                                    ৳{price.toFixed(0)}
-                                                </span>
-                                                {hasDiscount && (
-                                                    <span className="flash-sale-original">
-                                                        ৳{originalPrice.toFixed(0)}
-                                                    </span>
-                                                )}
+                                        <div className="flash-sale-stock-row">
+                                            <div className="stock-bar">
+                                                <div
+                                                    className="stock-bar-fill"
+                                                    style={{
+                                                        width: `${stockPercent}%`,
+                                                    }}
+                                                />
                                             </div>
-
-                                            <div className="flash-sale-stock-row">
-                                                <div className="stock-bar">
-                                                    <div
-                                                        className="stock-bar-fill"
-                                                        style={{
-                                                            width: `${stockPercent}%`,
-                                                        }}
-                                                    />
-                                                </div>
-                                                <span className="stock-text">
-                                                    Stock: {stock}
-                                                </span>
-                                            </div>
+                                            <span className="stock-text">
+                                                Stock: {stock}
+                                            </span>
                                         </div>
-                                    </Link>
-                                );
-                            })}
-                        </div>
+                                    </div>
+                                </Link>
+                            );
+                        })}
                     </div>
                 )}
             </div>

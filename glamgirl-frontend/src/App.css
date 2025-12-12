@@ -938,7 +938,7 @@ body {
 
 
 /* ============================================
-   🏷️ CATEGORY CARDS (Cute style)
+   🏷️ CATEGORY SECTION TITLE & TEXT
    ============================================ */
 
 .category-section-title {
@@ -949,6 +949,13 @@ body {
     color: var(--text-dark);
 }
 
+@media (max-width: 768px) {
+    .category-section-title {
+        font-size: 1.35rem;      /* mobile এ ছোট */
+        letter-spacing: 0.08em;  /* spacing কম */
+    }
+}
+/* default star এর বদলে heart */
 .category-section-title::after {
     content: '♡';
     display: block;
@@ -963,12 +970,13 @@ body {
     text-transform: uppercase;
 }
 
+/* প্রতিটা category card এর নাম */
 .category-name-text {
     font-weight: 700;
     font-size: 1.02rem;
     color: var(--text-dark);
     text-transform: capitalize;
-    letter-spacing: 0.06em; /* Daraz-type spacing */
+    letter-spacing: 0.06em;
     margin: 0;
 }
 
@@ -982,7 +990,7 @@ body {
 
 .category-card {
     background: radial-gradient(circle at top, #ffe4f4 0%, #fff7fb 55%, #ffffff 100%);
-    border-radius: 32px; /* আরও গোল ও একটু ফুলের মতো */
+    border-radius: 32px;
     padding: 24px 18px 20px;
     text-align: center;
     border: 1px solid #f9a8d4;
@@ -1007,7 +1015,7 @@ body {
    ============================================ */
 
 .category-photo-frame {
-    width: 150px;         /* বড় frame – ভিতরের photo পরিষ্কার দেখা যাবে */
+    width: 150px;
     height: 150px;
     border-radius: 50%;
     margin: 0 auto 12px;
@@ -1015,12 +1023,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* outer pink ring + soft glow */
     background: radial-gradient(circle at center, #ffffff 62%, #fed7e5 63%, #f9a8d4 100%);
     box-shadow: 0 6px 18px rgba(236, 72, 153, 0.25);
 }
 
-/* dashed inner circle – lace / stitching look */
+
 .category-photo-frame::after {
     content: '';
     position: absolute;
@@ -1030,6 +1037,7 @@ body {
     pointer-events: none;
 }
 
+/* Inner circle image container */
 .category-photo-inner {
     width: 105px;
     height: 105px;
@@ -1046,7 +1054,7 @@ body {
 .category-photo-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;  /* image সুন্দর ভাবে crop হবে, পুরো circle ভরবে */
+    object-fit: cover;
 }
 
 .category-photo-letter {
@@ -1055,24 +1063,84 @@ body {
     color: var(--pink-600);
 }
 
+/* ============================================
+   📱 MOBILE CATEGORY LAYOUT (grid, no scrollbar)
+   ============================================ */
+
+@media (max-width: 768px) {
+    .category-row {
+        row-gap: 12px;
+    }
+
+    /* Mobile এ প্রতি row এ 3টা করে */
+    .category-row > [class^='col-'] {
+        flex: 0 0 33.3333%;
+        max-width: 33.3333%;
+    }
+
+    .category-card {
+        padding: 14px 8px 10px;
+        border-radius: 22px;
+    }
+
+    .category-photo-frame {
+        width: 90px;
+        height: 90px;
+        box-shadow: 0 3px 10px rgba(236, 72, 153, 0.3);
+    }
+
+    .category-photo-inner {
+        width: 66px;
+        height: 66px;
+    }
+
+    .category-name-text {
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-row > [class^='col-'] {
+        flex: 0 0 34%;
+        max-width: 34%;
+    }
+
+    .category-photo-frame {
+        width: 82px;
+        height: 82px;
+    }
+
+    .category-photo-inner {
+        width: 60px;
+        height: 60px;
+    }
+
+    .category-name-text {
+        font-size: 0.76rem;
+    }
+}
 
 /* ============================================
-   🛍️ PRODUCT CARD
+   🛍️ PRODUCT CARD (Daraz-style, mobile-first)
    ============================================ */
 
 .product-card {
-    background-color: var(--white);
-    border-radius: 16px;
+    background-color: #ffffff;
+    border-radius: 14px;
     overflow: hidden;
     border: 1px solid var(--border-color);
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+    transition:
+        transform var(--transition-normal),
+        box-shadow var(--transition-normal),
+        border-color var(--transition-normal);
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .product-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     box-shadow: var(--shadow-md);
     border-color: var(--pink-200);
 }
@@ -1085,7 +1153,7 @@ body {
 
 .product-image {
     width: 100%;
-    height: 240px;
+    height: 210px;
     object-fit: cover;
     transition: transform 400ms ease;
 }
@@ -1094,15 +1162,43 @@ body {
     transform: scale(1.05);
 }
 
-/* Product Wishlist Button */
+/* Flash deal badge */
+.product-flash-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Discount pill */
+.product-discount-pill {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Wishlist button */
 .product-image-wrapper .wishlist-btn {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 38px;
-    height: 38px;
+    bottom: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background-color: var(--white);
+    background-color: #ffffff;
     border: none;
     box-shadow: var(--shadow-sm);
     display: flex;
@@ -1111,7 +1207,10 @@ body {
     cursor: pointer;
     color: var(--text-muted);
     z-index: 5;
-    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 .product-image-wrapper .wishlist-btn:hover {
@@ -1121,7 +1220,7 @@ body {
 
 .product-image-wrapper .wishlist-btn.active {
     background: var(--gradient-pink);
-    color: var(--white);
+    color: #ffffff;
 }
 
 .out-of-stock-badge {
@@ -1130,20 +1229,22 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.75);
-    color: var(--white);
+    color: #ffffff;
     padding: 10px 20px;
     border-radius: 50px;
     font-weight: 600;
     font-size: 12px;
 }
 
-.product-card .card-body {
-    padding: 16px;
+/* Product body */
+.product-card-body {
+    padding: 12px 10px 10px;
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
+/* Category badge (reuse) */
 .category-badge {
     display: inline-block;
     background-color: var(--pink-100);
@@ -1152,14 +1253,15 @@ body {
     border-radius: 50px;
     font-size: 11px;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
+/* Title */
 .product-title {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-dark);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -1167,42 +1269,111 @@ body {
     line-height: 1.4;
 }
 
-.product-price {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--pink-600);
-    margin-bottom: 0;
+/* Rating row */
+.product-rating-row {
+    display: flex;
+    align-items: center;
+    font-size: 11px;
 }
 
-.product-card .btn-pink {
-    margin-top: auto;
-    padding: 10px 16px;
-    font-size: 13px;
+/* Price row */
+.product-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.product-price-main {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--pink-600);
+
+}
+
+.product-price-old {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+/* Add button */
+.product-add-btn {
+    margin-top: 6px;
+    padding: 7px 10px;
+    font-size: 12px;
 }
 
 /* ============================================
-   📄 PRODUCT DETAIL PAGE
+   📄 PRODUCT DETAIL PAGE (responsive)
    ============================================ */
 
 .product-detail-image img {
-    border-radius: 16px;
+    width: 100%;
+    border-radius: 14px;
     box-shadow: var(--shadow-md);
+    object-fit: cover;
 }
 
+/* Flash pill on image */
+.product-detail-flash-pill {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Title and rating */
 .product-detail-title {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--text-dark);
-    margin-bottom: 12px;
+    margin-bottom: 6px;
 }
 
-.product-detail-price {
-    font-size: 2rem;
+.product-detail-rating {
+    font-size: 13px;
+}
+
+/* Price row */
+.product-detail-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.product-detail-price-main {
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--pink-600);
-    margin-bottom: 16px;
 }
 
+.product-detail-price-old {
+    font-size: 1rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+.product-detail-discount-badge {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    padding: 3px 8px;
+    border-radius: 999px;
+}
+
+/* Description */
+.product-detail-desc {
+    font-size: 0.95rem;
+}
+
+/* Quantity selector (আগের মতোই, শুধু এখানে রাখলাম) */
 .quantity-selector {
     display: inline-flex;
     align-items: center;
@@ -1237,6 +1408,26 @@ body {
     font-weight: 600;
     min-width: 40px;
     text-align: center;
+}
+
+/* Extra info row (Free delivery, Authentic badge etc.) */
+.product-detail-extra {
+    margin-top: 4px;
+}
+
+/* Mobile tweaks for detail page */
+@media (max-width: 768px) {
+    .product-detail-title {
+        font-size: 1.3rem;
+    }
+
+    .product-detail-price-main {
+        font-size: 1.5rem;
+    }
+
+    .product-detail-page {
+        padding-top: 1.5rem !important;
+    }
 }
 
 /* ============================================
@@ -1683,7 +1874,7 @@ footer a:hover {
 
 /* ============================================
    🎀 CUTE MARQUEE BANNER
-   Professional Scrolling Announcement
+   Continuous, smoother marquee
    ============================================ */
 
 .marquee-banner {
@@ -1698,8 +1889,10 @@ footer a:hover {
 
 .marquee-content {
     display: flex;
-    animation: marquee 10s linear infinite;
+    width: max-content;
     white-space: nowrap;
+    animation: marquee 16s linear infinite;
+    will-change: transform;
 }
 
 .marquee-content span {
@@ -1709,6 +1902,7 @@ footer a:hover {
     letter-spacing: 1px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     display: inline-block;
+    padding-right: 4rem; /* দুই span এর মাঝে gap */
 }
 
 @keyframes marquee {
@@ -1720,9 +1914,11 @@ footer a:hover {
     }
 }
 
-/* Pause on hover */
-.marquee-banner:hover .marquee-content {
-    animation-play-state: paused;
+/* শুধু desktop hover এ pause হবে, mobile এ না */
+@media (hover: hover) and (pointer: fine) {
+    .marquee-banner:hover .marquee-content {
+        animation-play-state: paused;
+    }
 }
 
 /* Responsive */
@@ -1730,7 +1926,7 @@ footer a:hover {
     .marquee-banner {
         padding: 10px 0;
     }
-    
+
     .marquee-content span {
         font-size: 12px;
         letter-spacing: 0.8px;
@@ -1741,7 +1937,7 @@ footer a:hover {
     .marquee-banner {
         padding: 8px 0;
     }
-    
+
     .marquee-content span {
         font-size: 11px;
     }
@@ -1749,47 +1945,39 @@ footer a:hover {
 
 /* ============================================
    🎯 DARAZ-STYLE HERO SECTION
-   Clean - Direct Image - Side Gaps like Daraz
-   (Square Corners)
+   Responsive banner with <img>, mobile-friendly
    ============================================ */
 
 .simple-hero-section {
-    position: relative;
     width: 100%;
-    height: 75vh;
-    min-height: 450px;
-    overflow: hidden;
-    background-color: #f9fafb; /* outer page background */
-    display: flex;
-    align-items: center;
+    padding: 4px 0 12px;         /* উপরের/নিচের gap কমানো */
+    background-color: #f9fafb;
 }
 
-/* Centered container with SQUARE corners */
 .simple-hero-inner {
     position: relative;
     width: 100%;
-    max-width: 1320px;     /* width barano ache ekhanei */
-    height: 100%;
+    max-width: 1320px;
     margin: 0 auto;
-    border-radius: 0;      /* 🔥 square corners */
+    border-radius: 0;
     overflow: hidden;
-    background-color: #f3f4f6; /* banner bg */
+    background-color: #f3f4f6;
     box-shadow: var(--shadow-lg);
+    /* স্থির ratio, Daraz-স্টাইল height */
+    aspect-ratio: 16 / 6;
 }
 
-/* Banner Slider Container */
+/* Slider container */
 .simple-banner-slider {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-/* Individual Banner Slide */
+/* Individual slide */
 .simple-banner-slide {
     position: absolute;
     inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.6s ease-out;
@@ -1800,29 +1988,26 @@ footer a:hover {
 .simple-banner-slide.active {
     opacity: 1;
     visibility: visible;
-    z-index: 1;
     pointer-events: auto;
+    z-index: 1;
 }
 
-/* Button Position - Bottom Center inside card */
+/* Banner image (কোনও crop করবে না) */
+.hero-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;             /* সম্পূর্ণ image দেখা যাবে */
+    background-color: #fdf2f8;       /* extra জায়গা soft pink */
+    display: block;
+}
+
+/* Button Position - Bottom Center */
 .simple-banner-button {
     position: absolute;
-    bottom: 40px;
+    bottom: 28px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 5;
-    animation: fadeInUp 0.8s ease 0.5s both;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate(-50%, 20px);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
+    z-index: 2;
 }
 
 /* Navigation Arrows */
@@ -1834,7 +2019,7 @@ footer a:hover {
     border: none;
     width: 50px;
     height: 50px;
-    border-radius: 50%; /* arrow button gula round thakbe */
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1863,7 +2048,7 @@ footer a:hover {
 /* Dots Indicator */
 .simple-banner-dots {
     position: absolute;
-    bottom: 18px;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -1891,6 +2076,202 @@ footer a:hover {
     background: white;
     width: 24px;
     border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .simple-hero-inner {
+        aspect-ratio: 16 / 7;
+        border-radius: 12px;
+    }
+
+    .simple-banner-button {
+        bottom: 24px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 11px 30px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .simple-hero-section {
+        padding: 4px 0 10px;   /* Hero আর Flash Sale এর মাঝে gap কমানো */
+    }
+
+    .simple-hero-inner {
+        aspect-ratio: 16 / 9;  /* Mobile height Daraz–এর মতো */
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+    }
+
+    .simple-banner-nav {
+        width: 38px;
+        height: 38px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 10px;
+    }
+
+    .simple-banner-nav.next {
+        right: 10px;
+    }
+
+    .simple-banner-button {
+        bottom: 18px;
+    }
+
+    /* ✅ Mobile এ ছোট বাটন */
+    .simple-banner-button .btn-pink {
+        padding: 9px 22px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .simple-hero-inner {
+        aspect-ratio: 16 / 9;
+        border-radius: 10px;
+    }
+
+    .simple-banner-nav {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 8px;
+    }
+
+    .simple-banner-nav.next {
+        right: 8px;
+    }
+
+    .simple-banner-button {
+        bottom: 16px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 8px 18px;
+        font-size: 12px;
+    }
+
+    .simple-banner-dots {
+        bottom: 10px;
+        gap: 6px;
+    }
+
+    .simple-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .simple-dot.active {
+        width: 18px;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .simple-hero-inner {
+        aspect-ratio: 16 / 7;
+        border-radius: 12px;
+    }
+
+    .simple-banner-button {
+        bottom: 28px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 12px 32px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .simple-hero-section {
+        padding: 12px 0 20px;
+    }
+
+    .simple-hero-inner {
+        aspect-ratio: 16 / 9; /* Mobile এ Daraz-style height */
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+    }
+
+    .hero-banner-img {
+        object-fit: contain;        /* পুরো image দেখা যাবে */
+        background-color: #fdf2f8;  /* side/top bottom এ soft pink */
+    }
+
+    .simple-banner-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 12px;
+    }
+
+    .simple-banner-nav.next {
+        right: 12px;
+    }
+
+    .simple-banner-button {
+        bottom: 24px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 11px 28px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .simple-hero-inner {
+        aspect-ratio: 16 / 9;
+        border-radius: 10px;
+    }
+
+    .simple-banner-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 8px;
+    }
+
+    .simple-banner-nav.next {
+        right: 8px;
+    }
+
+    .simple-banner-button {
+        bottom: 20px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 10px 24px;
+        font-size: 13px;
+    }
+
+    .simple-banner-dots {
+        bottom: 14px;
+        gap: 8px;
+    }
+
+    .simple-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .simple-dot.active {
+        width: 20px;
+    }
 }
 
 /* Button Styling - Theme Colors */
@@ -2019,7 +2400,7 @@ footer a:hover {
    ============================================ */
 
 .flash-sale-section {
-    padding: 20px 0 28px;
+    padding: 14px 0 24px;
     background: #fff7fb;
     border-top: 1px solid #ffe4ef;
     border-bottom: 1px solid #ffe4ef;
