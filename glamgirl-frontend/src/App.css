@@ -936,8 +936,48 @@ body {
     color: var(--pink-400);
 }
 
+
 /* ============================================
    🏷️ CATEGORY CARDS (Cute style)
+   ============================================ */
+
+.category-section-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text-dark);
+}
+
+.category-section-title::after {
+    content: '♡';
+    display: block;
+    margin-top: 8px;
+    font-size: 20px;
+    color: var(--pink-500);
+}
+
+.category-section-subtitle {
+    font-size: 0.92rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.category-name-text {
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: var(--text-dark);
+    text-transform: capitalize;
+    letter-spacing: 0.06em; /* Daraz-type spacing */
+    margin: 0;
+}
+
+.category-card:hover .category-name-text {
+    color: var(--pink-600);
+}
+
+/* ============================================
+   🏷️ CATEGORY CARDS (Cute flower/oval style)
    ============================================ */
 
 .category-card {
@@ -961,44 +1001,13 @@ body {
     border-color: var(--pink-300);
     background: radial-gradient(circle at top, #ffd3ec 0%, #fff7fb 60%, #ffffff 100%);
 }
-/* Cute circular icon / image */
-.cute-category-icon-wrapper {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    margin: 0 auto 10px;
-    background: radial-gradient(circle, #f9a8d4 0%, #fdf2f8 60%, #ffffff 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(236, 72, 153, 0.25);
-    overflow: hidden;
-    border: 2px solid #ffffff;
-}
 
-.cute-category-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* যদি image না থাকে, initial লেটার দেখাবে */
-.cute-category-letter {
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--pink-600);
-}
-
-.cute-category-card h5 {
-    font-weight: 600;
-    color: var(--text-dark);
-    margin: 0;
-    font-size: 1rem;
-}
-
+/* ============================================
+   🌸 CATEGORY PHOTO FRAME (Big, lace style)
+   ============================================ */
 
 .category-photo-frame {
-    width: 150px;         /* আগে থেকে বড় – image পরিষ্কার দেখা যাবে */
+    width: 150px;         /* বড় frame – ভিতরের photo পরিষ্কার দেখা যাবে */
     height: 150px;
     border-radius: 50%;
     margin: 0 auto 12px;
@@ -1011,18 +1020,18 @@ body {
     box-shadow: 0 6px 18px rgba(236, 72, 153, 0.25);
 }
 
-/* dotted inner ring to mimic lace */
+/* dashed inner circle – lace / stitching look */
 .category-photo-frame::after {
     content: '';
     position: absolute;
-    inset: 18px;               /* কতটা ভিতরে dashed circle থাকবে */
+    inset: 18px;
     border-radius: 50%;
     border: 3px dashed #f9a8d4;
     pointer-events: none;
 }
 
 .category-photo-inner {
-    width: 105px;              /* বড় image container */
+    width: 105px;
     height: 105px;
     border-radius: 50%;
     overflow: hidden;
@@ -1033,18 +1042,20 @@ body {
     justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
+
 .category-photo-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;         /* image সুন্দর ভাবে crop হবে, circle fill হবে */
+    object-fit: cover;  /* image সুন্দর ভাবে crop হবে, পুরো circle ভরবে */
 }
 
-/* যদি image না থাকে, letter দেখাবে */
 .category-photo-letter {
     font-size: 30px;
     font-weight: 700;
     color: var(--pink-600);
 }
+
+
 /* ============================================
    🛍️ PRODUCT CARD
    ============================================ */

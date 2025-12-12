@@ -194,9 +194,12 @@ const Home = () => {
             {/* Categories Section */}
             <section className="py-5">
                 <div className="container">
-                    <h2 className="section-title text-center mb-5">
-                        Shop by Category
+                    <h2 className="section-title category-section-title text-center mb-2">
+                            Shop by Category
                     </h2>
+                    <p className="category-section-subtitle text-center text-muted mb-5">
+                        Explore your favourite beauty collections
+                    </p>
 
                     {loading ? (
                         <div className="text-center py-5">
@@ -238,7 +241,7 @@ const Home = () => {
                                                     </div>
                                                 </div>
 
-                                                <h5 className="fw-semibold mb-1">
+                                                <h5 className="category-name-text mb-1">
                                                     {category.name}
                                                 </h5>
                                                 <p className="text-muted small mb-0">
