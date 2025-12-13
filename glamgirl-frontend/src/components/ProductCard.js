@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     FaCartPlus,
     FaStar,
     FaHeart,
     FaRegHeart,
     FaBolt,
+    FaShoppingBag,
 } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
@@ -14,9 +15,11 @@ import { toast } from 'react-toastify';
 const ProductCard = ({ product }) => {
     const { addToCart } = useCart();
     const { isInWishlist, toggleWishlist } = useWishlist();
+    const navigate = useNavigate();
 
     const handleAddToCart = async (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const result = await addToCart(product.id, 1);
         if (result.success) {
             toast.success('Added to cart! 🛒');
@@ -25,8 +28,21 @@ const ProductCard = ({ product }) => {
         }
     };
 
+    const handleBuyNow = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const result = await addToCart(product.id, 1);
+        if (result.success) {
+            toast.success('Redirecting to checkout... 🛍️');
+            navigate('/checkout');
+        } else {
+            toast.error(result.error);
+        }
+    };
+
     const handleWishlist = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const result = toggleWishlist(product);
         if (result.success) {
             toast.success(result.message);
@@ -38,7 +54,7 @@ const ProductCard = ({ product }) => {
         'https://via.placeholder.com/400x400?text=GlamGirl+Product';
     const inWishlist = isInWishlist(product.id);
 
-    // ✅ Flash sale / discount logic
+    // Flash sale / discount logic
     const hasFlashDiscount =
         product.is_flash_sale &&
         product.flash_price &&
@@ -55,7 +71,6 @@ const ProductCard = ({ product }) => {
             : 0;
 
     return (
-        // Mobile এ 2 column: col-6, tablet+ এ bootstrap অনুযায়ী
         <div className="col-6 col-md-4 col-lg-3 mb-3">
             <Link
                 to={`/product/${product.id}`}
@@ -88,9 +103,7 @@ const ProductCard = ({ product }) => {
 
                         {/* Wishlist Button */}
                         <button
-                            className={`wishlist-btn ${
-                                inWishlist ? 'active' : ''
-                            }`}
+                            className={`wishlist-btn ${inWishlist ? 'active' : ''}`}
                             onClick={handleWishlist}
                         >
                             {inWishlist ? <FaHeart /> : <FaRegHeart />}
@@ -113,7 +126,7 @@ const ProductCard = ({ product }) => {
 
                         <h6 className="product-title">{product.name}</h6>
 
-                        {/* Rating placeholder (Daraz-style simple) */}
+                        {/* Rating */}
                         <div className="product-rating-row mb-1">
                             <FaStar className="text-warning me-1" />
                             <small className="text-muted">4.5</small>
@@ -121,7 +134,7 @@ const ProductCard = ({ product }) => {
                         </div>
 
                         {/* Price row */}
-                        <div className="product-price-row mb-1">
+                        <div className="product-price-row mb-2">
                             <span className="product-price-main">
                                 ৳{currentPrice.toFixed(0)}
                             </span>
@@ -132,15 +145,26 @@ const ProductCard = ({ product }) => {
                             )}
                         </div>
 
-                        {/* Add to cart button */}
-                        <button
-                            className="btn btn-pink w-100 product-add-btn"
-                            onClick={handleAddToCart}
-                            disabled={product.stock <= 0}
-                        >
-                            <FaCartPlus className="me-2" />
-                            Add to Cart
-                        </button>
+                        {/* ✅ Button Group - Custom CSS */}
+                        <div className="product-btn-group">
+                            <button
+                                className="product-cart-btn"
+                                onClick={handleAddToCart}
+                                disabled={product.stock <= 0}
+                            >
+                                <FaCartPlus />
+                                <span>Add to Cart</span>
+                            </button>
+                            
+                            <button
+                                className="product-buy-btn"
+                                onClick={handleBuyNow}
+                                disabled={product.stock <= 0}
+                            >
+                                <FaShoppingBag />
+                                <span>Buy Now</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </Link>

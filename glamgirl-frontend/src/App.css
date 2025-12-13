@@ -1296,12 +1296,7 @@ body {
     text-decoration: line-through;
 }
 
-/* Add button */
-.product-add-btn {
-    margin-top: 6px;
-    padding: 7px 10px;
-    font-size: 12px;
-}
+
 
 /* ============================================
    📄 PRODUCT DETAIL PAGE (responsive)
@@ -1717,6 +1712,7 @@ footer a:hover {
 .Toastify__toast {
     border-radius: 10px;
     font-family: 'Poppins', sans-serif;
+    color: #e5e7eb;
 }
 
 .Toastify__toast--success {
@@ -2717,5 +2713,183 @@ footer a:hover {
 
     .flash-sale-info {
         padding: 6px 6px 8px;
+    }
+}
+/* ============================================
+   🛒 PRODUCT CARD BUTTONS - Custom (No Bootstrap)
+   ============================================ */
+
+/* Button Group Container */
+.product-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 6px;
+}
+
+/* Add to Cart Button - Smaller */
+.product-cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: var(--pink-600);
+    background-color: var(--pink-50);
+    border: 1.5px solid var(--pink-300);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.product-cart-btn:hover:not(:disabled) {
+    background-color: var(--pink-100);
+    border-color: var(--pink-400);
+    transform: translateY(-1px);
+}
+
+.product-cart-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.product-cart-btn svg {
+    font-size: 11px;
+}
+
+/* Buy Now Button - Prominent */
+.product-buy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    padding: 9px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+}
+
+.product-buy-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #db2777 0%, #be185d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
+}
+
+.product-buy-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.product-buy-btn svg {
+    font-size: 12px;
+}
+
+/* ============================================
+   📦 PRODUCT CARD - Slightly Taller
+   ============================================ */
+
+/* Card একটু লম্বা (আগের চেয়ে বেশি না) */
+.product-card {
+    min-height: 380px;
+}
+
+.product-card-body {
+    padding: 10px 10px 12px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Image আগের মতো */
+.product-image {
+    height: 200px;
+}
+
+/* Title 2 line */
+.product-title {
+    -webkit-line-clamp: 2;
+}
+
+/* ============================================
+   📱 MOBILE RESPONSIVE - Product Buttons
+   ============================================ */
+
+@media (max-width: 576px) {
+    .product-card {
+        min-height: 360px;
+    }
+    
+    .product-image {
+        height: 175px;
+    }
+    
+    .product-card-body {
+        padding: 8px 8px 10px;
+    }
+    
+    .product-btn-group {
+        gap: 5px;
+    }
+    
+    /* Add to Cart - Mobile */
+    .product-cart-btn {
+        padding: 6px 8px;
+        font-size: 10px;
+        gap: 4px;
+    }
+    
+    .product-cart-btn svg {
+        font-size: 10px;
+    }
+    
+    /* ✅ Buy Now - Mobile এ Text সহ থাকবে */
+    .product-buy-btn {
+        padding: 7px 8px;
+        font-size: 10px;
+        gap: 4px;
+    }
+    
+    .product-buy-btn svg {
+        font-size: 11px;
+    }
+    
+    .product-title {
+        font-size: 0.82rem;
+    }
+    
+    .product-price-main {
+        font-size: 0.95rem;
+    }
+}
+
+/* Extra Small Screens */
+@media (max-width: 380px) {
+    .product-cart-btn {
+        padding: 5px 6px;
+        font-size: 9px;
+    }
+    
+    .product-buy-btn {
+        padding: 6px 6px;
+        font-size: 9px;
+    }
+    
+    .product-cart-btn svg,
+    .product-buy-btn svg {
+        font-size: 10px;
     }
 }
