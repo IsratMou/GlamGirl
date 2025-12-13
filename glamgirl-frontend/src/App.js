@@ -7,7 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Custom CSS
-import './App.css';
+
+import './styles/base.css';
+import './styles/responsive.css';
 
 // Context
 import { CartProvider } from './context/CartContext';

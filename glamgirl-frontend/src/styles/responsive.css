@@ -1,0 +1,644 @@
+/* ============================================
+   📱 RESPONSIVE - WIDTH BASED STYLES
+   ============================================ */
+
+/* CATEGORY SECTION TITLE - mobile sizing */
+@media (max-width: 768px) {
+    .category-section-title {
+        font-size: 1.35rem;
+        letter-spacing: 0.08em;
+    }
+}
+
+/* MOBILE CATEGORY LAYOUT (grid, no scrollbar) */
+@media (max-width: 768px) {
+    .category-row {
+        row-gap: 12px;
+    }
+
+    /* Mobile এ প্রতি row এ 3টা করে */
+    .category-row > [class^='col-'] {
+        flex: 0 0 33.3333%;
+        max-width: 33.3333%;
+    }
+
+    .category-card {
+        padding: 14px 8px 10px;
+        border-radius: 22px;
+    }
+
+    .category-photo-frame {
+        width: 90px;
+        height: 90px;
+        box-shadow: 0 3px 10px rgba(236, 72, 153, 0.3);
+    }
+
+    .category-photo-inner {
+        width: 66px;
+        height: 66px;
+    }
+
+    .category-name-text {
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-row > [class^='col-'] {
+        flex: 0 0 34%;
+        max-width: 34%;
+    }
+
+    .category-photo-frame {
+        width: 82px;
+        height: 82px;
+    }
+
+    .category-photo-inner {
+        width: 60px;
+        height: 60px;
+    }
+
+    .category-name-text {
+        font-size: 0.76rem;
+    }
+}
+
+/* PRODUCT DETAIL PAGE - mobile tweaks */
+@media (max-width: 768px) {
+    .product-detail-title {
+        font-size: 1.3rem;
+    }
+
+    .product-detail-price-main {
+        font-size: 1.5rem;
+    }
+
+    .product-detail-page {
+        padding-top: 1.5rem !important;
+    }
+}
+
+/* NAVBAR + GLOBAL RESPONSIVE */
+@media (max-width: 992px) {
+    .nav-pill span {
+        display: none;
+    }
+    
+    .nav-pill {
+        padding: 10px;
+    }
+    
+    .hot-badge {
+        display: none;
+    }
+    
+    .menu-btn {
+        display: flex;
+    }
+    
+    .logo-image {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --navbar-height: 60px;
+    }
+    
+    .hero-section {
+        padding: 40px 0 60px;
+        text-align: center;
+    }
+    
+    .hero-section .lead {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .nav-left,
+    .sale-pill,
+    .search-btn {
+        display: none;
+    }
+    
+    .center-logo {
+        flex: 1;
+        justify-content: flex-start;
+        padding: 0;
+    }
+    
+    .nav-right {
+        flex: none;
+    }
+    
+    .icon-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+    
+    .logo-image {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .logo-glow,
+    .logo-sparkle-left,
+    .logo-sparkle-right {
+        display: none;
+    }
+    
+    .product-image {
+        height: 180px;
+    }
+    
+    .filter-card,
+    .order-summary {
+        position: static;
+    }
+    
+    .checkout-form {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-wrapper {
+        padding: 0 12px;
+    }
+    
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+    }
+    
+    .nav-right {
+        gap: 6px;
+    }
+    
+    .btn-pink,
+    .btn-outline-pink {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .product-card .card-body {
+        padding: 12px;
+    }
+    
+    .product-title {
+        font-size: 0.9rem;
+    }
+    
+    .product-price {
+        font-size: 1.1rem;
+    }
+}
+
+/* CUTE MARQUEE - responsive text sizes */
+@media (max-width: 768px) {
+    .marquee-banner {
+        padding: 10px 0;
+    }
+
+    .marquee-content span {
+        font-size: 12px;
+        letter-spacing: 0.8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .marquee-banner {
+        padding: 8px 0;
+    }
+
+    .marquee-content span {
+        font-size: 11px;
+    }
+}
+
+/* SIMPLE HERO (BANNER) - responsive sizing */
+@media (max-width: 992px) {
+    .simple-hero-inner {
+        aspect-ratio: 16 / 7;
+        border-radius: 12px;
+    }
+
+    .simple-banner-button {
+        bottom: 24px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 11px 30px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .simple-hero-section {
+        padding: 4px 0 10px;
+    }
+
+    .simple-hero-inner {
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+    }
+
+    .simple-banner-nav {
+        width: 38px;
+        height: 38px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 10px;
+    }
+
+    .simple-banner-nav.next {
+        right: 10px;
+    }
+
+    .simple-banner-button {
+        bottom: 18px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 9px 22px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .simple-hero-inner {
+        aspect-ratio: 16 / 9;
+        border-radius: 10px;
+    }
+
+    .simple-banner-nav {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 8px;
+    }
+
+    .simple-banner-nav.next {
+        right: 8px;
+    }
+
+    .simple-banner-button {
+        bottom: 16px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 8px 18px;
+        font-size: 12px;
+    }
+
+    .simple-banner-dots {
+        bottom: 10px;
+        gap: 6px;
+    }
+
+    .simple-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .simple-dot.active {
+        width: 18px;
+    }
+}
+
+/* DUPLICATE RESPONSIVE SET (keeping your logic) */
+@media (max-width: 992px) {
+    .simple-hero-inner {
+        aspect-ratio: 16 / 7;
+        border-radius: 12px;
+    }
+
+    .simple-banner-button {
+        bottom: 28px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 12px 32px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .simple-hero-section {
+        padding: 12px 0 20px;
+    }
+
+    .simple-hero-inner {
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+    }
+
+    .hero-banner-img {
+        object-fit: contain;
+        background-color: #fdf2f8;
+    }
+
+    .simple-banner-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 12px;
+    }
+
+    .simple-banner-nav.next {
+        right: 12px;
+    }
+
+    .simple-banner-button {
+        bottom: 24px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 11px 28px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .simple-hero-inner {
+        aspect-ratio: 16 / 9;
+        border-radius: 10px;
+    }
+
+    .simple-banner-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 8px;
+    }
+
+    .simple-banner-nav.next {
+        right: 8px;
+    }
+
+    .simple-banner-button {
+        bottom: 20px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 10px 24px;
+        font-size: 13px;
+    }
+
+    .simple-banner-dots {
+        bottom: 14px;
+        gap: 8px;
+    }
+
+    .simple-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .simple-dot.active {
+        width: 20px;
+    }
+}
+
+/* HERO HEIGHT RESPONSIVE */
+@media (max-width: 992px) {
+    .simple-hero-section {
+        height: 65vh;
+        min-height: 400px;
+    }
+
+    .simple-hero-inner {
+        border-radius: 0;
+    }
+
+    .simple-banner-button {
+        bottom: 32px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 12px 32px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .simple-hero-section {
+        height: 55vh;
+        min-height: 350px;
+        padding: 0 8px;
+    }
+
+    .simple-hero-inner {
+        border-radius: 0;
+    }
+
+    .simple-banner-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 12px;
+    }
+
+    .simple-banner-nav.next {
+        right: 12px;
+    }
+
+    .simple-banner-button {
+        bottom: 28px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 11px 28px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .simple-hero-section {
+        height: 50vh;
+        min-height: 320px;
+        padding: 0 6px;
+    }
+
+    .simple-hero-inner {
+        border-radius: 0;
+    }
+
+    .simple-banner-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .simple-banner-nav.prev {
+        left: 8px;
+    }
+
+    .simple-banner-nav.next {
+        right: 8px;
+    }
+
+    .simple-banner-button {
+        bottom: 24px;
+    }
+
+    .simple-banner-button .btn-pink {
+        padding: 10px 24px;
+        font-size: 13px;
+    }
+
+    .simple-banner-dots {
+        bottom: 14px;
+        gap: 8px;
+    }
+
+    .simple-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .simple-dot.active {
+        width: 20px;
+    }
+}
+
+/* FLASH SALE - responsive */
+@media (max-width: 992px) {
+    .flash-sale-header {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .flash-sale-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .flash-sale-right {
+        align-self: stretch;
+        justify-content: space-between;
+    }
+
+    .flash-sale-slider {
+        gap: 8px;
+    }
+
+    .flash-sale-card {
+        flex: 0 0 170px;
+        max-width: 170px;
+    }
+
+    .flash-sale-image {
+        height: 150px;
+    }
+}
+
+@media (max-width: 576px) {
+    .flash-sale-section {
+        padding: 18px 0 24px;
+    }
+
+    .flash-sale-card {
+        flex: 0 0 155px;
+        max-width: 155px;
+    }
+
+    .flash-sale-image {
+        height: 140px;
+    }
+
+    .flash-sale-info {
+        padding: 6px 6px 8px;
+    }
+}
+
+/* PRODUCT CARD BUTTONS - mobile overrides */
+@media (max-width: 576px) {
+    .product-card {
+        min-height: 360px;
+    }
+    
+    .product-image {
+        height: 175px;
+    }
+    
+    .product-card-body {
+        padding: 8px 8px 10px;
+    }
+    
+    .product-btn-group {
+        gap: 5px;
+    }
+    
+    /* Add to Cart - Mobile */
+    .product-cart-btn {
+        padding: 6px 8px;
+        font-size: 10px;
+        gap: 4px;
+    }
+    
+    .product-cart-btn svg {
+        font-size: 10px;
+    }
+    
+    /* Buy Now - Mobile এ Text সহ থাকবে */
+    .product-buy-btn {
+        padding: 7px 8px;
+        font-size: 10px;
+        gap: 4px;
+    }
+    
+    .product-buy-btn svg {
+        font-size: 11px;
+    }
+    
+    .product-title {
+        font-size: 0.82rem;
+    }
+    
+    .product-price-main {
+        font-size: 0.95rem;
+    }
+}
+
+/* Extra Small Screens */
+@media (max-width: 380px) {
+    .product-cart-btn {
+        padding: 5px 6px;
+        font-size: 9px;
+    }
+    
+    .product-buy-btn {
+        padding: 6px 6px;
+        font-size: 9px;
+    }
+    
+    .product-cart-btn svg,
+    .product-buy-btn svg {
+        font-size: 10px;
+    }
+}
