@@ -1,3 +1,5 @@
+// src/components/FlashSaleSection.js
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBolt } from 'react-icons/fa';
@@ -57,16 +59,9 @@ const FlashSaleSection = () => {
                 return;
             }
 
-            const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(
-                2,
-                '0'
-            );
-            const minutes = String(
-                Math.floor((diff / (1000 * 60)) % 60)
-            ).padStart(2, '0');
-            const seconds = String(
-                Math.floor((diff / 1000) % 60)
-            ).padStart(2, '0');
+            const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+            const minutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+            const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
 
             setTimeLeft({
                 hours,
@@ -86,7 +81,7 @@ const FlashSaleSection = () => {
         return null;
     }
 
-    // Home page এ শুধু প্রথম 6টা দেখাবো (grid), scrollbar/slider নেই
+    // Home page এ শুধু প্রথম 6টা দেখাবো
     const visibleProducts = products.slice(0, 6);
 
     return (
@@ -95,12 +90,16 @@ const FlashSaleSection = () => {
                 {/* Header */}
                 <div className="flash-sale-header">
                     <div className="flash-sale-left">
-                        <div className="flash-sale-title">
+                        {/* 🔗 শিরোনামে ক্লিক করলে Flash Sale পেজে যাবে */}
+                        <Link
+                            to="/flash-sale"
+                            className="flash-sale-title text-decoration-none"
+                        >
                             <span className="flash-sale-icon">
                                 <FaBolt />
                             </span>
                             <span className="flash-sale-text">Flash Sale</span>
-                        </div>
+                        </Link>
 
                         <span className="flash-sale-subtitle">On Sale Now</span>
 
@@ -108,24 +107,18 @@ const FlashSaleSection = () => {
                             <div className="flash-sale-timer">
                                 <span className="timer-label">Ends in</span>
                                 <div className="timer-boxes">
-                                    <span className="timer-box">
-                                        {timeLeft.hours}
-                                    </span>
+                                    <span className="timer-box">{timeLeft.hours}</span>
                                     <span className="timer-sep">:</span>
-                                    <span className="timer-box">
-                                        {timeLeft.minutes}
-                                    </span>
+                                    <span className="timer-box">{timeLeft.minutes}</span>
                                     <span className="timer-sep">:</span>
-                                    <span className="timer-box">
-                                        {timeLeft.seconds}
-                                    </span>
+                                    <span className="timer-box">{timeLeft.seconds}</span>
                                 </div>
                             </div>
                         )}
                     </div>
 
                     <div className="flash-sale-right">
-                        {/* এখন এই Shop more → আলাদা Flash Sale পেজে */}
+                        {/* আলাদা button → Flash Sale পেজ */}
                         <Link to="/flash-sale" className="flash-sale-view-all">
                             Shop more
                         </Link>
@@ -144,8 +137,7 @@ const FlashSaleSection = () => {
                         {visibleProducts.map((product) => {
                             const hasDiscount =
                                 product.flash_price &&
-                                Number(product.flash_price) <
-                                    Number(product.price);
+                                Number(product.flash_price) < Number(product.price);
 
                             const price = hasDiscount
                                 ? Number(product.flash_price)
@@ -208,9 +200,7 @@ const FlashSaleSection = () => {
                                             <div className="stock-bar">
                                                 <div
                                                     className="stock-bar-fill"
-                                                    style={{
-                                                        width: `${stockPercent}%`,
-                                                    }}
+                                                    style={{ width: `${stockPercent}%` }}
                                                 />
                                             </div>
                                             <span className="stock-text">

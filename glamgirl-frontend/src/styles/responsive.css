@@ -2,35 +2,102 @@
    📱 RESPONSIVE - WIDTH BASED STYLES
    ============================================ */
 
-/* CATEGORY SECTION TITLE - mobile sizing */
-@media (max-width: 768px) {
-    .category-section-title {
-        font-size: 1.35rem;
-        letter-spacing: 0.08em;
+/* ============================================
+   🏷️ SHOP BY CATEGORY - RESPONSIVE (MOBILE)
+   App-like Daraz style
+   ============================================ */
+
+/* Animations (mobile only) */
+@keyframes mobileCatTitleIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/* MOBILE CATEGORY LAYOUT (grid, no scrollbar) */
+@keyframes mobileCatCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ====== Title (<= 768px) ====== */
+
+@media (max-width: 768px) {
+    /* h2.section-title.category-section-title */
+    .section-title.category-section-title {
+        text-align: left;                       /* app-like left align */
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        margin: 0.05rem 8px 0.25rem !important; /* উপরের gap খুব কম, নিচেও কম */
+        background: linear-gradient(135deg, #ec4899, #db2777);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: mobileCatTitleIn 0.35s ease-out both;
+    }
+
+    /* underline ছোট ও বাম পাশে */
+    .section-title.category-section-title::after {
+        width: 54px;
+        height: 2px;
+        left: 8px;
+        transform: none;
+        bottom: -4px;
+        background: var(--pink-300);
+    }
+
+    /* Subtitle base.css এ hide করা আছে, তাই extra কিছু লাগবে না */
+}
+
+/* ====== Grid + Cards (<= 768px) ====== */
+
 @media (max-width: 768px) {
     .category-row {
-        row-gap: 12px;
+        row-gap: 6px;   /* দুই লাইনের মাঝে কম gap */
     }
 
-    /* Mobile এ প্রতি row এ 3টা করে */
+    /* প্রতি row এ 4টা করে category – Daraz style */
     .category-row > [class^='col-'] {
-        flex: 0 0 33.3333%;
-        max-width: 33.3333%;
+        flex: 0 0 25%;
+        max-width: 25%;
     }
 
+    /* Card – flat, app-style, কোনো hover transform নয় */
     .category-card {
-        padding: 14px 8px 10px;
-        border-radius: 22px;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 8px 4px 4px;
+        border-radius: 12px;
+        animation: mobileCatCardIn 0.30s ease-out both;
+        transform: none;
     }
 
+    /* desktop এর hover effect mobile এ disable করি */
+    .category-card:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: transparent;
+        background: transparent;
+    }
+
+    /* গোল icon – মোবাইলে বড় + cute effect */
     .category-photo-frame {
-        width: 90px;
-        height: 90px;
-        box-shadow: 0 3px 10px rgba(236, 72, 153, 0.3);
+        width: 82px;
+        height: 82px;
+        box-shadow: 0 4px 10px rgba(236, 72, 153, 0.25);
+        margin-bottom: 4px;
+        transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
     }
 
     .category-photo-inner {
@@ -40,19 +107,53 @@
 
     .category-name-text {
         font-size: 0.8rem;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.01em;
+        margin-top: 3px;
+        margin-bottom: 1px;
     }
+
+    /* "Shop Collection" base.css এ hide করা আছে */
+
+    /* Cute hover / press effect শুধুই circle এ, card এ নয় */
+    .category-card:hover .category-photo-frame,
+    .category-card:active .category-photo-frame {
+        transform: scale(0.95);
+        background-color: #ffe4f4;
+        box-shadow: 0 4px 10px rgba(236, 72, 153, 0.35);
+    }
+
+    .category-card:active {
+        background: rgba(252, 231, 243, 0.4);
+        border-radius: 14px;
+    }
+
+    /* Staggered animation – প্রথম কয়টা card এ হালকা delay */
+    .category-row > div:nth-child(1) .category-card { animation-delay: 0.02s; }
+    .category-row > div:nth-child(2) .category-card { animation-delay: 0.05s; }
+    .category-row > div:nth-child(3) .category-card { animation-delay: 0.08s; }
+    .category-row > div:nth-child(4) .category-card { animation-delay: 0.11s; }
+    .category-row > div:nth-child(5) .category-card { animation-delay: 0.14s; }
+    .category-row > div:nth-child(6) .category-card { animation-delay: 0.17s; }
+    .category-row > div:nth-child(7) .category-card { animation-delay: 0.20s; }
+    .category-row > div:nth-child(8) .category-card { animation-delay: 0.23s; }
 }
 
+/* ====== Very small phones (<= 480px) ====== */
+
 @media (max-width: 480px) {
-    .category-row > [class^='col-'] {
-        flex: 0 0 34%;
-        max-width: 34%;
+    .section-title.category-section-title {
+        font-size: 1.15rem;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .section-title.category-section-title::after {
+        width: 50px;
     }
 
     .category-photo-frame {
-        width: 82px;
-        height: 82px;
+        width: 76px;
+        height: 76px;
     }
 
     .category-photo-inner {
@@ -61,11 +162,21 @@
     }
 
     .category-name-text {
-        font-size: 0.76rem;
+        font-size: 0.75rem;
     }
 }
 
-/* PRODUCT DETAIL PAGE - mobile tweaks */
+/* Flash Sale → Category gap mobile এ খুব কম */
+@media (max-width: 768px) {
+    .flash-sale-section + section.py-5 {
+        padding-top: 4px;
+    }
+}
+
+/* ============================================
+   📄 PRODUCT DETAIL PAGE (MOBILE)
+   ============================================ */
+
 @media (max-width: 768px) {
     .product-detail-title {
         font-size: 1.3rem;
@@ -80,7 +191,10 @@
     }
 }
 
-/* NAVBAR + GLOBAL RESPONSIVE */
+/* ============================================
+   🔝 NAVBAR + GLOBAL RESPONSIVE
+   ============================================ */
+
 @media (max-width: 992px) {
     .nav-pill span {
         display: none;
@@ -204,7 +318,10 @@
     }
 }
 
-/* CUTE MARQUEE - responsive text sizes */
+/* ============================================
+   🎀 CUTE MARQUEE - RESPONSIVE
+   ============================================ */
+
 @media (max-width: 768px) {
     .marquee-banner {
         padding: 10px 0;
@@ -226,15 +343,15 @@
     }
 }
 
-/* SIMPLE HERO (BANNER) - responsive sizing */
+/* ============================================
+   🎯 SIMPLE HERO (BANNER) RESPONSIVE
+   ============================================ */
+
+/* Tablet */
 @media (max-width: 992px) {
     .simple-hero-inner {
         aspect-ratio: 16 / 7;
         border-radius: 12px;
-    }
-
-    .simple-banner-button {
-        bottom: 24px;
     }
 
     .simple-banner-button .btn-pink {
@@ -243,9 +360,12 @@
     }
 }
 
+/* Mobile general */
 @media (max-width: 768px) {
     .simple-hero-section {
-        padding: 4px 0 10px;
+        height: auto;
+        min-height: 0;
+        padding: 0 0 8px;   /* marquee এর সাথে gap কম */
     }
 
     .simple-hero-inner {
@@ -275,9 +395,22 @@
         padding: 9px 22px;
         font-size: 13px;
     }
+
+    /* Hero CTA buttons mobile এ hide */
+    .hero-buttons,
+    .simple-banner-button {
+        display: none;
+    }
 }
 
+/* Small phones */
 @media (max-width: 576px) {
+    .simple-hero-section {
+        height: auto;
+        min-height: 0;
+        padding: 0 0 6px;
+    }
+
     .simple-hero-inner {
         aspect-ratio: 16 / 9;
         border-radius: 10px;
@@ -297,15 +430,6 @@
         right: 8px;
     }
 
-    .simple-banner-button {
-        bottom: 16px;
-    }
-
-    .simple-banner-button .btn-pink {
-        padding: 8px 18px;
-        font-size: 12px;
-    }
-
     .simple-banner-dots {
         bottom: 10px;
         gap: 6px;
@@ -321,235 +445,143 @@
     }
 }
 
-/* DUPLICATE RESPONSIVE SET (keeping your logic) */
-@media (max-width: 992px) {
-    .simple-hero-inner {
-        aspect-ratio: 16 / 7;
-        border-radius: 12px;
-    }
+/* ============================================
+   ⚡ FLASH SALE – MOBILE (Daraz-style + animation)
+   ============================================ */
 
-    .simple-banner-button {
-        bottom: 28px;
+/* ছোট pop-in animation */
+@keyframes flashCardPop {
+    from {
+        transform: translateY(8px) scale(0.95);
+        opacity: 0;
     }
-
-    .simple-banner-button .btn-pink {
-        padding: 12px 32px;
-        font-size: 15px;
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
     }
 }
 
+/* Tablet + Mobile (<= 768px) */
 @media (max-width: 768px) {
-    .simple-hero-section {
-        padding: 12px 0 20px;
+    /* Section – app-like tight spacing */
+    .flash-sale-section {
+        padding: 8px 0 14px;
+        background: #fff7fb;
+        border-top: 1px solid #ffe4ef;
+        border-bottom: 1px solid #ffe4ef;
     }
 
-    .simple-hero-inner {
-        aspect-ratio: 16 / 9;
-        border-radius: 12px;
-        box-shadow: var(--shadow-md);
-    }
-
-    .hero-banner-img {
-        object-fit: contain;
-        background-color: #fdf2f8;
-    }
-
-    .simple-banner-nav {
-        width: 40px;
-        height: 40px;
-    }
-
-    .simple-banner-nav.prev {
-        left: 12px;
-    }
-
-    .simple-banner-nav.next {
-        right: 12px;
-    }
-
-    .simple-banner-button {
-        bottom: 24px;
-    }
-
-    .simple-banner-button .btn-pink {
-        padding: 11px 28px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 576px) {
-    .simple-hero-inner {
-        aspect-ratio: 16 / 9;
-        border-radius: 10px;
-    }
-
-    .simple-banner-nav {
-        width: 35px;
-        height: 35px;
-        font-size: 14px;
-    }
-
-    .simple-banner-nav.prev {
-        left: 8px;
-    }
-
-    .simple-banner-nav.next {
-        right: 8px;
-    }
-
-    .simple-banner-button {
-        bottom: 20px;
-    }
-
-    .simple-banner-button .btn-pink {
-        padding: 10px 24px;
-        font-size: 13px;
-    }
-
-    .simple-banner-dots {
-        bottom: 14px;
-        gap: 8px;
-    }
-
-    .simple-dot {
-        width: 8px;
-        height: 8px;
-    }
-
-    .simple-dot.active {
-        width: 20px;
-    }
-}
-
-/* HERO HEIGHT RESPONSIVE */
-@media (max-width: 992px) {
-    .simple-hero-section {
-        height: 65vh;
-        min-height: 400px;
-    }
-
-    .simple-hero-inner {
-        border-radius: 0;
-    }
-
-    .simple-banner-button {
-        bottom: 32px;
-    }
-
-    .simple-banner-button .btn-pink {
-        padding: 12px 32px;
-        font-size: 15px;
-    }
-}
-
-@media (max-width: 768px) {
-    .simple-hero-section {
-        height: 55vh;
-        min-height: 350px;
-        padding: 0 8px;
-    }
-
-    .simple-hero-inner {
-        border-radius: 0;
-    }
-
-    .simple-banner-nav {
-        width: 40px;
-        height: 40px;
-    }
-
-    .simple-banner-nav.prev {
-        left: 12px;
-    }
-
-    .simple-banner-nav.next {
-        right: 12px;
-    }
-
-    .simple-banner-button {
-        bottom: 28px;
-    }
-
-    .simple-banner-button .btn-pink {
-        padding: 11px 28px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 576px) {
-    .simple-hero-section {
-        height: 50vh;
-        min-height: 320px;
-        padding: 0 6px;
-    }
-
-    .simple-hero-inner {
-        border-radius: 0;
-    }
-
-    .simple-banner-nav {
-        width: 35px;
-        height: 35px;
-        font-size: 14px;
-    }
-
-    .simple-banner-nav.prev {
-        left: 8px;
-    }
-
-    .simple-banner-nav.next {
-        right: 8px;
-    }
-
-    .simple-banner-button {
-        bottom: 24px;
-    }
-
-    .simple-banner-button .btn-pink {
-        padding: 10px 24px;
-        font-size: 13px;
-    }
-
-    .simple-banner-dots {
-        bottom: 14px;
-        gap: 8px;
-    }
-
-    .simple-dot {
-        width: 8px;
-        height: 8px;
-    }
-
-    .simple-dot.active {
-        width: 20px;
-    }
-}
-
-/* FLASH SALE - responsive */
-@media (max-width: 992px) {
+    /* Header – বাম দিকে title+timer, ডানে "Shop more" */
     .flash-sale-header {
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 10px;
     }
-}
 
-@media (max-width: 768px) {
-    .flash-sale-header {
+    .flash-sale-left {
+        display: flex;
         flex-direction: column;
         align-items: flex-start;
+        gap: 4px;
+    }
+
+    .flash-sale-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .flash-sale-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        font-size: 16px;
+    }
+
+    .flash-sale-text {
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+
+    .flash-sale-subtitle {
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 999px;
+    }
+
+    /* Timer ছোট Daraz-style box */
+    .flash-sale-timer {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 2px;
+    }
+
+    .timer-label {
+        font-size: 11px;
+    }
+
+    .timer-boxes {
+        gap: 3px;
+    }
+
+    .timer-box {
+        min-width: 26px;
+        padding: 3px 5px;
+        font-size: 11px;
+        border-radius: 4px;
+    }
+
+    .timer-sep {
+        font-size: 11px;
     }
 
     .flash-sale-right {
-        align-self: stretch;
-        justify-content: space-between;
+        align-self: flex-start;
     }
 
+    .flash-sale-view-all {
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    /* Slider – Daraz app মতো horizontal scroll, scrollbar hidden */
     .flash-sale-slider {
-        gap: 8px;
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;          /* Firefox এ scrollbar hide */
     }
 
+    /* WebKit browser (Chrome, Edge, Safari) এ scrollbar hide */
+    .flash-sale-slider::-webkit-scrollbar {
+        height: 0;
+        display: none;
+    }
+
+    /* Card – mobile width + animation */
     .flash-sale-card {
-        flex: 0 0 170px;
-        max-width: 170px;
+        flex: 0 0 160px;
+        max-width: 160px;
+        scroll-snap-align: start;
+        animation: flashCardPop 0.35s ease-out;
+        transition:
+            transform 0.16s ease,
+            box-shadow 0.16s ease,
+            border-color 0.16s ease;
+    }
+
+    /* Tap করলে হালকা press effect */
+    .flash-sale-card:active {
+        transform: translateY(-2px) scale(0.97);
+        box-shadow: var(--shadow-md);
+        border-color: #fecaca;
     }
 
     .flash-sale-image {
@@ -557,26 +589,63 @@
     }
 }
 
+/* Small phones (<= 576px) */
 @media (max-width: 576px) {
     .flash-sale-section {
-        padding: 18px 0 24px;
+        padding: 6px 0 12px;
     }
 
+    .flash-sale-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 15px;
+    }
+
+    .flash-sale-text {
+        font-size: 1.05rem;
+    }
+
+    .flash-sale-subtitle {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+
+    /* Card size – একটু ছোট, বেশি card দেখা যায় */
     .flash-sale-card {
-        flex: 0 0 155px;
-        max-width: 155px;
+        flex: 0 0 150px;
+        max-width: 150px;
+        border-radius: 6px;
     }
 
     .flash-sale-image {
-        height: 140px;
+        height: 135px;
     }
 
-    .flash-sale-info {
-        padding: 6px 6px 8px;
+    .flash-sale-name {
+        font-size: 12px;
+    }
+
+    .flash-sale-price {
+        font-size: 14px;
+    }
+
+    .flash-sale-original {
+        font-size: 10px;
+    }
+
+    .stock-bar {
+        height: 5px;
+    }
+
+    .stock-text {
+        font-size: 9px;
     }
 }
 
-/* PRODUCT CARD BUTTONS - mobile overrides */
+/* ============================================
+   🛒 PRODUCT CARD BUTTONS - MOBILE
+   ============================================ */
+
 @media (max-width: 576px) {
     .product-card {
         min-height: 360px;
@@ -640,5 +709,39 @@
     .product-cart-btn svg,
     .product-buy-btn svg {
         font-size: 10px;
+    }
+}
+
+/* ============================================
+   📱 MOBILE BOTTOM NAV - SHOW ON SMALL SCREENS
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* bottom nav visible on mobile */
+    .mobile-bottom-nav {
+        display: flex;
+    }
+
+    /* content যেন bottom nav এর নিচে ঢুকে না যায় */
+    .main-content {
+        padding-bottom: 80px; /* nav (60) + extra gap */
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-bottom-nav {
+        height: 60px;       /* ছোট স্ক্রিনেও একই height */
+    }
+
+    .mb-nav-icon {
+        font-size: 16px;
+    }
+
+    .mb-nav-label {
+        font-size: 9px;
+    }
+
+    .main-content {
+        padding-bottom: 86px;
     }
 }
