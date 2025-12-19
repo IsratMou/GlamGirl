@@ -2137,68 +2137,86 @@ footer a:hover { color: var(--pink-400); }
 }
 
 /* ============================================
-   🧾 FOR YOU (Daraz-style header) - Desktop/Base
+   🛒 FOR YOU (Daraz-style) - Desktop/Base
    ============================================ */
 
 .gg-for-you {
-    background: #ffffff;
-    border-top: 1px solid #f3f4f6;
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+    position: relative;
 }
 
 .gg-for-you__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    margin-bottom: 14px;
+    gap: 16px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
 }
 
 .gg-for-you__left {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .gg-for-you__title {
     margin: 0;
-    font-size: 1.35rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     position: relative;
-    padding-left: 10px;
 }
 
-.gg-for-you__title::before {
+.gg-for-you__title::after {
     content: "";
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 18px;
+    bottom: -4px;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ec4899 0%, #f97316 100%);
     border-radius: 999px;
-    background: linear-gradient(180deg, #f97316, #ec4899);
 }
 
 .gg-for-you__tag {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    color: #ef4444;
-    background: #fee2e2;
-    padding: 4px 10px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    padding: 5px 14px;
     border-radius: 999px;
-    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
 }
 
 .gg-for-you__more {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--pink-600);
+    font-size: 14px;
+    font-weight: 600;
+    color: #ec4899;
     text-decoration: none;
-    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.gg-for-you__more::after {
+    content: "→";
+    font-size: 16px;
+    transition: transform 0.3s ease;
 }
 
 .gg-for-you__more:hover {
-    color: var(--pink-700);
+    color: #db2777;
+    transform: translateX(4px);
+}
+
+.gg-for-you__more:hover::after {
+    transform: translateX(4px);
 }

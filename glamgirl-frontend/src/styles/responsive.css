@@ -579,3 +579,70 @@
 
     .main-content { padding-bottom: 86px; }
 }
+
+/* ============================================
+   🛒 FOR YOU - Mobile Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+    .gg-for-you__header {
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+    }
+
+    .gg-for-you__title {
+        font-size: 1.2rem;
+        letter-spacing: 0.3px;
+    }
+
+    .gg-for-you__title::after {
+        height: 2.5px;
+        bottom: -3px;
+    }
+
+    .gg-for-you__tag {
+        font-size: 9px;
+        padding: 4px 12px;
+    }
+
+    .gg-for-you__more {
+        font-size: 12px;
+    }
+
+    .gg-for-you__more::after {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .gg-for-you__header {
+        gap: 10px;
+    }
+
+    .gg-for-you__left {
+        gap: 8px;
+    }
+
+    .gg-for-you__title {
+        font-size: 1.1rem;
+    }
+
+    .gg-for-you__tag {
+        font-size: 8px;
+        padding: 3px 10px;
+    }
+
+    .gg-for-you__more {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gg-for-you__title {
+        font-size: 1rem;
+    }
+
+    .gg-for-you__title::after {
+        height: 2px;
+    }
+}
