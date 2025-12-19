@@ -6,6 +6,11 @@ from django.shortcuts import render
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 
+from django.db.models import Sum, IntegerField, Case, When
+from django.utils import timezone
+from datetime import timedelta
+
+
 
 # ============================================
 # Template Views (HTML Pages)
@@ -70,3 +75,52 @@ class FlashSaleListView(generics.ListAPIView):
             is_active=True,
             is_flash_sale=True
         )
+        
+
+# ✅ "For You" Recommended (Most Bought / Popular)
+class RecommendedProductsListView(generics.ListAPIView):
+    """
+    "For You" = Most bought / popular products (global recommendation)
+    Query params:
+      - limit: how many products (default 12, max 50)
+    """
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        limit = int(self.request.query_params.get('limit', 12))
+        limit = max(1, min(limit, 50))
+
+        base_qs = Product.objects.filter(is_active=True)
+
+        try:
+            # orders app থেকে OrderItem model import
+            from orders.models import OrderItem
+
+            top = (
+                OrderItem.objects
+                .values('product_id')
+                .annotate(total_sold=Sum('quantity'))
+                .order_by('-total_sold')
+            )
+
+            top_ids = [row['product_id'] for row in top[:limit]]
+
+            # যদি order data না থাকে → fallback latest products
+            if not top_ids:
+                return base_qs.order_by('-id')[:limit]
+
+            # top_ids order preserve করার জন্য Case/When
+            preserved = Case(
+                *[When(id=pid, then=pos) for pos, pid in enumerate(top_ids)],
+                output_field=IntegerField(),
+            )
+
+            return (
+                base_qs.filter(id__in=top_ids)
+                .annotate(_order=preserved)
+                .order_by('_order')[:limit]
+            )
+
+        except Exception:
+            # orders app/model mismatch হলে → safe fallback
+            return base_qs.order_by('-id')[:limit]

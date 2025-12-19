@@ -98,8 +98,7 @@ const Navbar = () => {
                                 <span>GlamGirl</span>
                             </div>
                         </div>
-                        <div className="logo-sparkle-left">✦</div>
-                        <div className="logo-sparkle-right">✦</div>
+                        
                     </Link>
 
                     {/* RIGHT - Actions */}

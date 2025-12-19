@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// src/pages/Home.js
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
     FaTruck,
@@ -8,7 +9,13 @@ import {
     FaChevronLeft,
     FaChevronRight,
 } from 'react-icons/fa';
-import { getProducts, getCategories } from '../services/api';
+
+import {
+    getProducts,
+    getCategories,
+    getRecommendedProducts,
+} from '../services/api';
+
 import ProductCard from '../components/ProductCard';
 import FlashSaleSection from '../components/FlashSaleSection';
 
@@ -24,30 +31,59 @@ const bannerImages = [
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+
+    // For You products
+    const [recommended, setRecommended] = useState([]);
+    const [recLoading, setRecLoading] = useState(true);
+
     const [loading, setLoading] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [showAllCategories, setShowAllCategories] = useState(false);
 
-    // Products + Categories load
+    // Products + Categories + Recommended load (error-safe)
     useEffect(() => {
         let isMounted = true;
 
         const fetchData = async () => {
             try {
-                const [productsRes, categoriesRes] = await Promise.all([
+                const results = await Promise.allSettled([
                     getProducts(),
                     getCategories(),
+                    getRecommendedProducts(12),
                 ]);
 
                 if (!isMounted) return;
 
-                setProducts(productsRes.data);
-                setCategories(categoriesRes.data);
+                // products
+                if (results[0].status === 'fulfilled') {
+                    setProducts(results[0].value?.data || []);
+                } else {
+                    console.error('Products fetch failed:', results[0].reason);
+                    setProducts([]);
+                }
+
+                // categories
+                if (results[1].status === 'fulfilled') {
+                    setCategories(results[1].value?.data || []);
+                } else {
+                    console.error('Categories fetch failed:', results[1].reason);
+                    setCategories([]);
+                }
+
+                // recommended
+                if (results[2].status === 'fulfilled') {
+                    const data = results[2].value?.data;
+                    setRecommended(Array.isArray(data) ? data : []);
+                } else {
+                    console.error('Recommended fetch failed:', results[2].reason);
+                    setRecommended([]);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             } finally {
                 if (isMounted) {
                     setLoading(false);
+                    setRecLoading(false);
                 }
             }
         };
@@ -63,9 +99,7 @@ const Home = () => {
     useEffect(() => {
         if (typeof window === 'undefined') return;
 
-        const mediaQuery = window.matchMedia(
-            '(prefers-reduced-motion: reduce)'
-        );
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
         if (mediaQuery.matches) {
             return;
@@ -116,16 +150,49 @@ const Home = () => {
         ? categories
         : categories.slice(0, 6);
 
+    const featuredProducts = useMemo(() => products.slice(0, 8), [products]);
+
+    // ✅ FIXED: For You always fills up to 12 items (no more showing only 1)
+    const forYouProducts = useMemo(() => {
+        const featuredIds = new Set(featuredProducts.map((p) => p.id));
+
+        const picked = [];
+        const seen = new Set();
+
+        const add = (arr) => {
+            (arr || []).forEach((p) => {
+                if (!p || seen.has(p.id)) return;
+                if (picked.length >= 12) return;
+                seen.add(p.id);
+                picked.push(p);
+            });
+        };
+
+        // 1) First: recommended (popular/most bought)
+        add(recommended);
+
+        // 2) Fill: products excluding featured
+        if (picked.length < 12) {
+            add(products.filter((p) => !featuredIds.has(p.id)));
+        }
+
+        // 3) Final fill: any remaining products
+        if (picked.length < 12) {
+            add(products);
+        }
+
+        return picked.slice(0, 12);
+    }, [recommended, products, featuredProducts]);
+
     return (
         <>
-            {/* 🔔 Marquee Banner – Navbar এর ঠিক নিচে */}
+            {/* Marquee Banner – Navbar এর ঠিক নিচে */}
             <div className="marquee-banner">
                 <div className="marquee-content">
                     <span>
                         ✨ WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
                         WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
                     </span>
-                    {/* দ্বিতীয় span – continuous scroll এর জন্য */}
                     <span>
                         ✨ WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
                         WELCOME TO GLAM GIRL 💖 HAPPY SHOPPING 🛍️ ORDER NOW ✨
@@ -133,7 +200,7 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* 🎀 Hero Section */}
+            {/* Hero Section */}
             <section className="simple-hero-section">
                 <div className="simple-hero-inner">
                     {/* Banner Slider */}
@@ -199,28 +266,20 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* ⚡ FLASH SALE SECTION – Hero এর ঠিক পরে */}
+            {/* Flash Sale Section */}
             <FlashSaleSection />
 
-            {/* Categories Section */}
-            <section className="py-5">
+            {/* Categories Section (tight padding) */}
+            <section className="gg-section gg-section--category">
                 <div className="container">
                     <h2 className="section-title category-section-title text-center mb-2">
                         Shop by Category
                     </h2>
-                    <p className="category-section-subtitle text-center text-muted mb-5">
-                        Explore your favourite beauty collections
-                    </p>
 
                     {loading ? (
-                        <div className="text-center py-5">
-                            <div
-                                className="spinner-border text-pink"
-                                role="status"
-                            >
-                                <span className="visually-hidden">
-                                    Loading...
-                                </span>
+                        <div className="text-center py-4">
+                            <div className="spinner-border text-pink" role="status">
+                                <span className="visually-hidden">Loading...</span>
                             </div>
                         </div>
                     ) : (
@@ -229,9 +288,8 @@ const Home = () => {
                                 {visibleCategories.map((category) => {
                                     const imageUrl = category.image;
                                     const initial =
-                                        (category.name || '')
-                                            .charAt(0)
-                                            .toUpperCase() || '?';
+                                        (category.name || '').charAt(0).toUpperCase() ||
+                                        '?';
 
                                     return (
                                         <div
@@ -242,15 +300,13 @@ const Home = () => {
                                                 to={`/products?category=${category.id}`}
                                                 className="text-decoration-none"
                                             >
-                                                <div className="category-card cute-category-card h-100">
+                                                <div className="category-card h-100">
                                                     <div className="category-photo-frame">
                                                         <div className="category-photo-inner">
                                                             {imageUrl ? (
                                                                 <img
                                                                     src={imageUrl}
-                                                                    alt={
-                                                                        category.name
-                                                                    }
+                                                                    alt={category.name}
                                                                     className="category-photo-image"
                                                                     loading="lazy"
                                                                 />
@@ -265,9 +321,6 @@ const Home = () => {
                                                     <h5 className="category-name-text mb-1">
                                                         {category.name}
                                                     </h5>
-                                                    <p className="text-muted small mb-0">
-                                                        Shop Collection
-                                                    </p>
                                                 </div>
                                             </Link>
                                         </div>
@@ -281,9 +334,7 @@ const Home = () => {
                                     <button
                                         type="button"
                                         className="btn btn-outline-pink btn-sm px-4"
-                                        onClick={() =>
-                                            setShowAllCategories(true)
-                                        }
+                                        onClick={() => setShowAllCategories(true)}
                                     >
                                         Show more
                                     </button>
@@ -292,11 +343,8 @@ const Home = () => {
                         </>
                     )}
 
-                    <div className="text-center mt-4">
-                        <Link
-                            to="/products"
-                            className="btn btn-outline-pink btn-lg"
-                        >
+                    <div className="text-center mt-3">
+                        <Link to="/products" className="btn btn-outline-pink btn-lg">
                             View All Categories
                         </Link>
                     </div>
@@ -307,9 +355,7 @@ const Home = () => {
             <section className="py-5 bg-light">
                 <div className="container">
                     <div className="d-flex justify-content-between align-items-center mb-5">
-                        <h2 className="section-title mb-0">
-                            Featured Products
-                        </h2>
+                        <h2 className="section-title mb-0">Featured Products</h2>
                         <Link to="/products" className="btn btn-pink">
                             View All
                         </Link>
@@ -317,31 +363,22 @@ const Home = () => {
 
                     {loading ? (
                         <div className="text-center py-5">
-                            <div
-                                className="spinner-border text-pink"
-                                role="status"
-                            >
-                                <span className="visually-hidden">
-                                    Loading...
-                                </span>
+                            <div className="spinner-border text-pink" role="status">
+                                <span className="visually-hidden">Loading...</span>
                             </div>
                         </div>
                     ) : (
                         <>
                             <div className="row g-3">
-                                {products.slice(0, 8).map((product) => (
-                                    <ProductCard
-                                        key={product.id}
-                                        product={product}
-                                    />
+                                {featuredProducts.map((product) => (
+                                    <ProductCard key={product.id} product={product} />
                                 ))}
                             </div>
 
                             {products.length === 0 && (
                                 <div className="text-center py-5">
                                     <p className="text-muted">
-                                        No products found. Add products from
-                                        admin panel.
+                                        No products found. Add products from admin panel.
                                     </p>
                                 </div>
                             )}
@@ -350,12 +387,40 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Features Section */}
+            {/* For You (Most Bought / Popular) */}
+            <section className="gg-section gg-section--tight gg-for-you">
+                <div className="container">
+                    <div className="gg-for-you__header">
+                        <div className="gg-for-you__left">
+                            <h2 className="gg-for-you__title">For You</h2>
+                            <span className="gg-for-you__tag">Popular</span>
+                        </div>
+
+                        <Link to="/products" className="gg-for-you__more">
+                            See more
+                        </Link>
+                    </div>
+
+                    {recLoading ? (
+                        <div className="text-center py-4">
+                            <div className="spinner-border text-pink" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="row g-3">
+                            {forYouProducts.map((product) => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* Why Choose Us */}
             <section className="py-5">
                 <div className="container">
-                    <h2 className="section-title text-center mb-5">
-                        Why Choose Us
-                    </h2>
+                    <h2 className="section-title text-center mb-5">Why Choose Us</h2>
                     <div className="row g-4">
                         <div className="col-lg-3 col-md-6">
                             <div className="feature-card h-100">
@@ -364,23 +429,18 @@ const Home = () => {
                                 </div>
                                 <h5>Free Delivery</h5>
                                 <p className="text-muted">
-                                    Free delivery in Dhaka for orders above
-                                    ৳1000
+                                    Free delivery in Dhaka for orders above ৳1000
                                 </p>
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
                             <div className="feature-card h-100">
                                 <div className="feature-icon mb-4">
-                                    <FaShieldAlt
-                                        size={48}
-                                        className="text-pink"
-                                    />
+                                    <FaShieldAlt size={48} className="text-pink" />
                                 </div>
                                 <h5>100% Authentic</h5>
                                 <p className="text-muted">
-                                    Guaranteed original products with
-                                    certificates
+                                    Guaranteed original products with certificates
                                 </p>
                             </div>
                         </div>
@@ -398,10 +458,7 @@ const Home = () => {
                         <div className="col-lg-3 col-md-6">
                             <div className="feature-card h-100">
                                 <div className="feature-icon mb-4">
-                                    <FaHeadset
-                                        size={48}
-                                        className="text-pink"
-                                    />
+                                    <FaHeadset size={48} className="text-pink" />
                                 </div>
                                 <h5>24/7 Support</h5>
                                 <p className="text-muted">

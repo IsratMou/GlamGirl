@@ -11,7 +11,9 @@ const api = axios.create({
     withCredentials: true,
 });
 
+// =======================
 // Products API
+// =======================
 export const getCategories = () => api.get('/products/categories/');
 export const getProducts = () => api.get('/products/');
 export const getProduct = (id) => api.get(`/products/${id}/`);
@@ -21,7 +23,16 @@ export const getProductsByCategory = (categoryId) =>
 // 🔥 Flash Sale API
 export const getFlashSaleProducts = () => api.get('/products/flash-sale/');
 
+// ✅ For You / Recommended API (Most bought / popular)
+export const getRecommendedProducts = (limit = 12) => {
+    const params = new URLSearchParams();
+    params.set('limit', String(limit));
+    return api.get(`/products/recommended/?${params.toString()}`);
+};
+
+// =======================
 // Cart API
+// =======================
 export const getCart = () => api.get('/cart/');
 export const addToCart = (productId, quantity = 1) =>
     api.post('/cart/add/', { product_id: productId, quantity });
@@ -30,7 +41,9 @@ export const updateCartItem = (itemId, quantity) =>
 export const removeFromCart = (itemId) => api.delete(`/cart/remove/${itemId}/`);
 export const clearCart = () => api.delete('/cart/clear/');
 
+// =======================
 // Orders API
+// =======================
 export const createOrder = (orderData) => api.post('/orders/create/', orderData);
 export const getOrders = () => api.get('/orders/');
 export const getOrder = (orderId) => api.get(`/orders/${orderId}/`);

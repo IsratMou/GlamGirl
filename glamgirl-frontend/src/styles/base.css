@@ -1,6 +1,5 @@
 /* ============================================
-   🎀 GLAMGIRL - Production Ready CSS
-   Optimized for Performance & Accessibility
+   GLAMGIRL - Base CSS (Desktop/Common)
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
@@ -10,7 +9,7 @@
    ============================================ */
 
 :root {
-    /* Colors - Accessible Contrast */
+    /* Colors */
     --pink-50: #fdf2f8;
     --pink-100: #fce7f3;
     --pink-200: #fbcfe8;
@@ -19,30 +18,35 @@
     --pink-500: #ec4899;
     --pink-600: #db2777;
     --pink-700: #be185d;
-    
-    /* Text Colors - WCAG AA Compliant */
+
+    /* Text */
     --text-dark: #1f2937;
     --text-body: #374151;
     --text-muted: #6b7280;
     --white: #ffffff;
-    
+
     /* Gradients */
     --gradient-pink: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
     --gradient-soft: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
-    
-    /* Shadows - Lighter for performance */
+
+    /* Shadows */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-    
-    /* Navbar Height - Fixed */
+
+    /* Layout */
     --navbar-height: 70px;
-    
+
+    /* Section spacing system */
+    --section-py: 48px;
+    --section-py-sm: 32px;
+    --category-py: 28px;
+
     /* Transitions */
     --transition-fast: 150ms ease;
     --transition-normal: 250ms ease;
-    
-    /* Border */
+
+    /* Borders */
     --border-light: #f3e8ff;
     --border-color: #e5e7eb;
 }
@@ -71,24 +75,21 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Utility text color for pink theme (for icons etc.) */
 .text-pink {
     color: var(--pink-500) !important;
 }
 
-/* Focus Outline - Accessibility */
+/* Accessibility focus */
 :focus-visible {
     outline: 2px solid var(--pink-500);
     outline-offset: 2px;
 }
-
-/* Skip focus outline for mouse users */
 :focus:not(:focus-visible) {
     outline: none;
 }
 
 /* ============================================
-   Scrollbar - With Fallback
+   Scrollbar
    ============================================ */
 
 @supports (scrollbar-width: thin) {
@@ -102,19 +103,33 @@ body {
     ::-webkit-scrollbar {
         width: 8px;
     }
-    
     ::-webkit-scrollbar-track {
         background: var(--pink-50);
     }
-    
     ::-webkit-scrollbar-thumb {
         background: var(--pink-400);
         border-radius: 4px;
     }
-    
     ::-webkit-scrollbar-thumb:hover {
         background: var(--pink-500);
     }
+}
+
+/* ============================================
+   Section spacing helpers
+   ============================================ */
+
+.gg-section {
+    padding: var(--section-py) 0;
+}
+
+.gg-section.gg-section--tight {
+    padding: var(--section-py-sm) 0;
+}
+
+/* Category section: tighter than normal */
+.gg-section.gg-section--category {
+    padding: var(--category-py) 0;
 }
 
 /* ============================================
@@ -133,7 +148,7 @@ body {
 }
 
 /* ============================================
-   🎀 NAVBAR - Performance Optimized
+   NAVBAR
    ============================================ */
 
 .cute-navbar {
@@ -148,8 +163,6 @@ body {
     background-color: rgba(255, 255, 255, 0.95);
     border-bottom: 1px solid var(--border-light);
     transition: box-shadow var(--transition-normal);
-    /* Fallback for backdrop-filter */
-    /* backdrop-filter: blur(10px); */
 }
 
 @supports (backdrop-filter: blur(10px)) {
@@ -164,7 +177,7 @@ body {
     box-shadow: var(--shadow-md);
 }
 
-/* Sparkles - Reduced for Performance */
+/* Sparkles (desktop only, reduced motion safe) */
 .navbar-sparkles {
     display: none;
 }
@@ -177,7 +190,6 @@ body {
         pointer-events: none;
         overflow: hidden;
     }
-    
     .sparkle {
         position: absolute;
         color: var(--pink-300);
@@ -185,26 +197,18 @@ body {
         font-size: 10px;
         animation: sparkleFloat 5s ease-in-out infinite;
     }
-    
     .s1 { top: 20%; left: 10%; }
     .s2 { top: 60%; left: 20%; animation-delay: 1s; }
     .s3 { top: 30%; right: 15%; animation-delay: 2s; }
     .s4 { top: 70%; right: 25%; animation-delay: 3s; }
     .s5 { top: 45%; right: 10%; animation-delay: 4s; }
-    
+
     @keyframes sparkleFloat {
-        0%, 100% { 
-            transform: translateY(0); 
-            opacity: 0.3; 
-        }
-        50% { 
-            transform: translateY(-6px); 
-            opacity: 0.6; 
-        }
+        0%, 100% { transform: translateY(0); opacity: 0.3; }
+        50% { transform: translateY(-6px); opacity: 0.6; }
     }
 }
 
-/* Navbar Container */
 .navbar-wrapper {
     width: 100%;
     max-width: 1280px;
@@ -216,10 +220,6 @@ body {
     gap: 20px;
 }
 
-/* ============================================
-   Nav Left & Right
-   ============================================ */
-
 .nav-left,
 .nav-right {
     display: flex;
@@ -228,18 +228,10 @@ body {
     flex: 1;
 }
 
-.nav-left {
-    justify-content: flex-start;
-}
+.nav-left { justify-content: flex-start; }
+.nav-right { justify-content: flex-end; }
 
-.nav-right {
-    justify-content: flex-end;
-}
-
-/* ============================================
-   Nav Pills
-   ============================================ */
-
+/* Pills */
 .nav-pill {
     display: inline-flex;
     align-items: center;
@@ -252,7 +244,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 50px;
     text-decoration: none;
-    transition: 
+    transition:
         background-color var(--transition-fast),
         color var(--transition-fast),
         transform var(--transition-fast),
@@ -260,9 +252,7 @@ body {
     position: relative;
 }
 
-.pill-icon {
-    font-size: 14px;
-}
+.pill-icon { font-size: 14px; }
 
 .nav-pill:hover {
     background: var(--gradient-pink);
@@ -278,7 +268,7 @@ body {
     border-color: transparent;
 }
 
-/* Sale Pill */
+/* Sale pill */
 .sale-pill {
     background-color: var(--pink-50);
     border-color: var(--pink-200);
@@ -298,20 +288,14 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .hot-badge {
-        animation: pulseBadge 2s ease-in-out infinite;
-    }
-    
+    .hot-badge { animation: pulseBadge 2s ease-in-out infinite; }
     @keyframes pulseBadge {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.05); }
     }
 }
 
-/* ============================================
-   Center Logo
-   ============================================ */
-
+/* Logo */
 .center-logo {
     display: flex;
     align-items: center;
@@ -321,9 +305,7 @@ body {
     position: relative;
 }
 
-.logo-glow {
-    display: none;
-}
+.logo-glow { display: none; }
 
 @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
     .logo-glow {
@@ -335,17 +317,13 @@ body {
         border-radius: 50%;
         animation: logoGlow 4s ease-in-out infinite;
     }
-    
     @keyframes logoGlow {
         0%, 100% { transform: scale(1); opacity: 0.3; }
         50% { transform: scale(1.1); opacity: 0.5; }
     }
 }
 
-.logo-container {
-    position: relative;
-    z-index: 2;
-}
+.logo-container { position: relative; z-index: 2; }
 
 .logo-image {
     width: 75px;
@@ -355,57 +333,10 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .center-logo:hover .logo-image {
-        transform: scale(1.05);
-    }
+    .center-logo:hover .logo-image { transform: scale(1.05); }
 }
 
-.logo-fallback {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-}
-
-.fallback-icon {
-    font-size: 28px;
-    color: var(--pink-500);
-}
-
-.logo-fallback span {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--pink-600);
-}
-
-.logo-sparkle-left,
-.logo-sparkle-right {
-    display: none;
-}
-
-@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
-    .logo-sparkle-left,
-    .logo-sparkle-right {
-        display: block;
-        position: absolute;
-        font-size: 12px;
-        color: var(--pink-400);
-        animation: sparkleRotate 4s ease-in-out infinite;
-    }
-    
-    .logo-sparkle-left { left: 5px; top: 5px; }
-    .logo-sparkle-right { right: 5px; bottom: 5px; animation-delay: 2s; }
-    
-    @keyframes sparkleRotate {
-        0%, 100% { transform: rotate(0deg); opacity: 0.4; }
-        50% { transform: rotate(180deg); opacity: 0.7; }
-    }
-}
-
-/* ============================================
-   Icon Buttons
-   ============================================ */
-
+/* Icon buttons */
 .icon-btn {
     display: inline-flex;
     align-items: center;
@@ -420,7 +351,7 @@ body {
     cursor: pointer;
     text-decoration: none;
     position: relative;
-    transition: 
+    transition:
         background-color var(--transition-fast),
         color var(--transition-fast),
         transform var(--transition-fast),
@@ -441,7 +372,6 @@ body {
     border-color: transparent;
 }
 
-/* Icon Badge */
 .icon-badge {
     position: absolute;
     top: -4px;
@@ -459,17 +389,10 @@ body {
     border: 2px solid var(--white);
 }
 
-.cart-badge {
-    background-color: #f59e0b;
-}
+.cart-badge { background-color: #f59e0b; }
 
-/* ============================================
-   Hamburger Menu
-   ============================================ */
-
-.menu-btn {
-    display: none;
-}
+/* Hamburger */
+.menu-btn { display: none; }
 
 .hamburger {
     display: flex;
@@ -477,7 +400,6 @@ body {
     gap: 5px;
     width: 20px;
 }
-
 .hamburger span {
     width: 100%;
     height: 2px;
@@ -485,21 +407,16 @@ body {
     border-radius: 2px;
     transition: transform var(--transition-normal), opacity var(--transition-normal);
 }
-
 .menu-btn.active .hamburger span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
 }
-
-.menu-btn.active .hamburger span:nth-child(2) {
-    opacity: 0;
-}
-
+.menu-btn.active .hamburger span:nth-child(2) { opacity: 0; }
 .menu-btn.active .hamburger span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
 }
 
 /* ============================================
-   Search Dropdown - Fixed Overflow
+   Search Dropdown
    ============================================ */
 
 .search-dropdown {
@@ -513,7 +430,7 @@ body {
     max-height: 0;
     opacity: 0;
     visibility: hidden;
-    transition: 
+    transition:
         max-height 300ms ease,
         opacity 200ms ease,
         visibility 0ms 300ms;
@@ -524,7 +441,7 @@ body {
     opacity: 1;
     visibility: visible;
     box-shadow: var(--shadow-md);
-    transition: 
+    transition:
         max-height 300ms ease,
         opacity 200ms ease,
         visibility 0ms;
@@ -650,9 +567,7 @@ body {
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
 }
 
-.mobile-drawer.open {
-    transform: translateX(0);
-}
+.mobile-drawer.open { transform: translateX(0); }
 
 .drawer-header {
     display: flex;
@@ -710,10 +625,7 @@ body {
     border-radius: 50px;
 }
 
-.drawer-search svg {
-    color: var(--text-muted);
-    flex-shrink: 0;
-}
+.drawer-search svg { color: var(--text-muted); flex-shrink: 0; }
 
 .drawer-search input {
     flex: 1;
@@ -763,7 +675,6 @@ body {
     background-color: var(--pink-50);
     transform: translateX(4px);
 }
-
 .drawer-link:hover .link-icon {
     background: var(--gradient-pink);
     color: var(--white);
@@ -773,7 +684,6 @@ body {
     background: var(--gradient-pink);
     color: var(--white);
 }
-
 .drawer-link.active .link-icon {
     background-color: rgba(255, 255, 255, 0.2);
     color: var(--white);
@@ -790,9 +700,7 @@ body {
     border-radius: 10px;
 }
 
-.drawer-badge {
-    background-color: #ef4444;
-}
+.drawer-badge { background-color: #ef4444; }
 
 .drawer-footer {
     padding: 16px;
@@ -809,7 +717,7 @@ body {
 }
 
 /* ============================================
-   🦸 HERO SECTION
+   HERO SECTION (classic)
    ============================================ */
 
 .hero-section {
@@ -827,9 +735,7 @@ body {
     line-height: 1.2;
 }
 
-.hero-title span {
-    color: var(--pink-600);
-}
+.hero-title span { color: var(--pink-600); }
 
 .hero-section .lead {
     font-size: 1.1rem;
@@ -850,10 +756,7 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .hero-image {
-        animation: heroFloat 6s ease-in-out infinite;
-    }
-    
+    .hero-image { animation: heroFloat 6s ease-in-out infinite; }
     @keyframes heroFloat {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
@@ -861,7 +764,7 @@ body {
 }
 
 /* ============================================
-   🔘 BUTTONS
+   Buttons
    ============================================ */
 
 .btn-pink {
@@ -901,7 +804,7 @@ body {
     font-size: 15px;
     cursor: pointer;
     text-decoration: none;
-    transition: 
+    transition:
         background-color var(--transition-fast),
         color var(--transition-fast),
         transform var(--transition-fast);
@@ -915,7 +818,7 @@ body {
 }
 
 /* ============================================
-   📦 SECTION TITLE
+   Section title
    ============================================ */
 
 .section-title {
@@ -933,36 +836,22 @@ body {
     font-size: 16px;
     color: var(--pink-400);
 }
+
 /* ============================================
-   🏷️ SHOP BY CATEGORY - DESKTOP & COMMON
-   Daraz-style tiles in GlamGirl theme
+   SHOP BY CATEGORY - Desktop/Common
    ============================================ */
 
-/* Animations */
 @keyframes categoryFadeUp {
-    0% {
-        opacity: 0;
-        transform: translateY(14px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    0% { opacity: 0; transform: translateY(14px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes categoryCardPop {
-    0% {
-        opacity: 0;
-        transform: translateY(10px) scale(0.96);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    0% { opacity: 0; transform: translateY(10px) scale(0.96); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ====== TITLE ====== */
-
+/* Title */
 .category-section-title {
     font-size: 1.8rem;
     font-weight: 800;
@@ -971,17 +860,16 @@ body {
     color: var(--text-dark);
 }
 
-/* h2.section-title.category-section-title */
 .section-title.category-section-title {
     position: relative;
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 0.35rem !important;  /* আগে বেশি ফাঁকা ছিল */
+    margin-bottom: 0.35rem !important;
     animation: categoryFadeUp 0.45s ease-out both;
 }
 
-/* Global .section-title::after override for this one */
+/* Override global after for category title */
 .section-title.category-section-title::after {
     content: '';
     position: absolute;
@@ -994,20 +882,14 @@ body {
     background: var(--gradient-pink);
 }
 
-/* ====== SUBTITLE (HIDDEN) ====== */
-/* "Explore your favourite beauty collections" – hide it globally */
-
+/* Old subtitle (if exists anywhere) */
 .category-section-subtitle {
     display: none !important;
 }
 
-/* Row gap */
-.category-row {
-    row-gap: 18px;
-}
+.category-row { row-gap: 18px; }
 
-/* ====== CATEGORY CARD (Daraz tile style) ====== */
-
+/* Card */
 .category-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -1025,12 +907,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-
-    /* entry animation */
     animation: categoryCardPop 0.35s ease-out both;
 }
 
-/* hover effect (desktop) */
 .category-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-md);
@@ -1038,10 +917,8 @@ body {
     background-color: #fff7fb;
 }
 
-/* ====== CATEGORY PHOTO FRAME (bigger circle) ====== */
-
 .category-photo-frame {
-    width: 84px;    /* আগে 70px → এখন বড় */
+    width: 84px;
     height: 84px;
     border-radius: 50%;
     margin: 0 auto 8px;
@@ -1057,7 +934,7 @@ body {
 }
 
 .category-photo-inner {
-    width: 68px;   /* আগে 56px */
+    width: 68px;
     height: 68px;
     border-radius: 50%;
     overflow: hidden;
@@ -1080,8 +957,6 @@ body {
     color: var(--pink-600);
 }
 
-/* ====== NAME & SUBTEXT ====== */
-
 .category-name-text {
     font-weight: 600;
     font-size: 0.98rem;
@@ -1092,32 +967,22 @@ body {
     margin-bottom: 2px;
 }
 
-.category-card:hover .category-name-text {
-    color: var(--pink-600);
-}
-
-/* প্রতিটা card এর "Shop Collection" subtitle hide করলাম */
-.category-card p.small {
-    display: none !important;
-}
-
+.category-card:hover .category-name-text { color: var(--pink-600); }
 
 /* ============================================
-   ⚡ FLASH SALE + CATEGORY GAP (GLOBAL)
+   Flash Sale + Category gap (FIXED selector)
    ============================================ */
 
-/* Flash sale এর ঠিক পরের category section এর gap আরও কম */
-.flash-sale-section + section.py-5 {
-    padding-top: 18px;   /* আগে 28px ছিল → এখন আরও কম */
+.flash-sale-section + .gg-section--category {
+    padding-top: 14px;
 }
 
-/* সেই section এর title-এর উপরের default margin একটু কমাই */
-.flash-sale-section + section.py-5 .section-title.category-section-title {
-    margin-top: 0.15rem;  /* প্রায় 2–3px মত */
+.flash-sale-section + .gg-section--category .section-title.category-section-title {
+    margin-top: 0.1rem;
 }
 
 /* ============================================
-   🛍️ PRODUCT CARD (Daraz-style, mobile-first)
+   PRODUCT CARD (grid)
    ============================================ */
 
 .product-card {
@@ -1132,7 +997,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    min-height: 380px; /* Slightly taller */
+    min-height: 380px;
 }
 
 .product-card:hover {
@@ -1154,11 +1019,8 @@ body {
     transition: transform 400ms ease;
 }
 
-.product-card:hover .product-image {
-    transform: scale(1.05);
-}
+.product-card:hover .product-image { transform: scale(1.05); }
 
-/* Flash deal badge */
 .product-flash-badge {
     position: absolute;
     top: 10px;
@@ -1173,7 +1035,6 @@ body {
     align-items: center;
 }
 
-/* Discount pill */
 .product-discount-pill {
     position: absolute;
     top: 10px;
@@ -1186,7 +1047,6 @@ body {
     font-weight: 700;
 }
 
-/* Wishlist button */
 .product-image-wrapper .wishlist-btn {
     position: absolute;
     bottom: 10px;
@@ -1232,7 +1092,6 @@ body {
     font-size: 12px;
 }
 
-/* Product body */
 .product-card-body {
     padding: 10px 10px 12px;
     display: flex;
@@ -1240,7 +1099,6 @@ body {
     flex: 1;
 }
 
-/* Category badge (reuse) */
 .category-badge {
     display: inline-block;
     background-color: var(--pink-100);
@@ -1252,7 +1110,6 @@ body {
     margin-bottom: 4px;
 }
 
-/* Title */
 .product-title {
     font-weight: 600;
     font-size: 0.9rem;
@@ -1265,14 +1122,12 @@ body {
     line-height: 1.4;
 }
 
-/* Rating row */
 .product-rating-row {
     display: flex;
     align-items: center;
     font-size: 11px;
 }
 
-/* Price row */
 .product-price-row {
     display: flex;
     align-items: baseline;
@@ -1291,11 +1146,7 @@ body {
     text-decoration: line-through;
 }
 
-/* ============================================
-   🛒 PRODUCT CARD BUTTONS - Custom (No Bootstrap)
-   ============================================ */
-
-/* Button Group Container */
+/* Product card buttons */
 .product-btn-group {
     display: flex;
     flex-direction: column;
@@ -1304,7 +1155,6 @@ body {
     padding-top: 6px;
 }
 
-/* Add to Cart Button - Smaller */
 .product-cart-btn {
     display: flex;
     align-items: center;
@@ -1334,11 +1184,8 @@ body {
     cursor: not-allowed;
 }
 
-.product-cart-btn svg {
-    font-size: 11px;
-}
+.product-cart-btn svg { font-size: 11px; }
 
-/* Buy Now Button - Prominent */
 .product-buy-btn {
     display: flex;
     align-items: center;
@@ -1370,12 +1217,10 @@ body {
     box-shadow: none;
 }
 
-.product-buy-btn svg {
-    font-size: 12px;
-}
+.product-buy-btn svg { font-size: 12px; }
 
 /* ============================================
-   📄 PRODUCT DETAIL PAGE (responsive)
+   PRODUCT DETAIL
    ============================================ */
 
 .product-detail-image img {
@@ -1385,7 +1230,6 @@ body {
     object-fit: cover;
 }
 
-/* Flash pill on image */
 .product-detail-flash-pill {
     position: absolute;
     top: 12px;
@@ -1398,7 +1242,6 @@ body {
     font-weight: 700;
 }
 
-/* Title and rating */
 .product-detail-title {
     font-size: 1.6rem;
     font-weight: 700;
@@ -1406,11 +1249,8 @@ body {
     margin-bottom: 6px;
 }
 
-.product-detail-rating {
-    font-size: 13px;
-}
+.product-detail-rating { font-size: 13px; }
 
-/* Price row */
 .product-detail-price-row {
     display: flex;
     align-items: baseline;
@@ -1439,12 +1279,8 @@ body {
     border-radius: 999px;
 }
 
-/* Description */
-.product-detail-desc {
-    font-size: 0.95rem;
-}
+.product-detail-desc { font-size: 0.95rem; }
 
-/* Quantity selector */
 .quantity-selector {
     display: inline-flex;
     align-items: center;
@@ -1481,13 +1317,10 @@ body {
     text-align: center;
 }
 
-/* Extra info row (Free delivery, Authentic badge etc.) */
-.product-detail-extra {
-    margin-top: 4px;
-}
+.product-detail-extra { margin-top: 4px; }
 
 /* ============================================
-   🔍 FILTER CARD
+   FILTER CARD
    ============================================ */
 
 .filter-card {
@@ -1506,9 +1339,7 @@ body {
     margin-bottom: 12px;
 }
 
-.form-check-input {
-    border-color: var(--border-color);
-}
+.form-check-input { border-color: var(--border-color); }
 
 .form-check-input:checked {
     background-color: var(--pink-500);
@@ -1521,7 +1352,7 @@ body {
 }
 
 /* ============================================
-   🛒 CART PAGE
+   CART
    ============================================ */
 
 .cart-item {
@@ -1530,13 +1361,8 @@ body {
     transition: background-color var(--transition-fast);
 }
 
-.cart-item:hover {
-    background-color: var(--pink-50);
-}
-
-.cart-item:last-child {
-    border-bottom: none;
-}
+.cart-item:hover { background-color: var(--pink-50); }
+.cart-item:last-child { border-bottom: none; }
 
 .cart-item-image {
     width: 80px;
@@ -1591,7 +1417,7 @@ body {
 }
 
 /* ============================================
-   💳 ORDER SUMMARY & CHECKOUT
+   ORDER SUMMARY & CHECKOUT
    ============================================ */
 
 .order-summary {
@@ -1633,7 +1459,7 @@ body {
 }
 
 /* ============================================
-   ⭐ FEATURE CARDS
+   FEATURE CARDS (Why choose us)
    ============================================ */
 
 .feature-card {
@@ -1670,7 +1496,7 @@ body {
 }
 
 /* ============================================
-   🦶 FOOTER
+   FOOTER (current)
    ============================================ */
 
 footer {
@@ -1698,9 +1524,7 @@ footer ul {
     margin: 0;
 }
 
-footer ul li {
-    margin-bottom: 8px;
-}
+footer ul li { margin-bottom: 8px; }
 
 footer a {
     color: #9ca3af;
@@ -1708,9 +1532,7 @@ footer a {
     transition: color var(--transition-fast);
 }
 
-footer a:hover {
-    color: var(--pink-400);
-}
+footer a:hover { color: var(--pink-400); }
 
 .social-links {
     display: flex;
@@ -1734,7 +1556,7 @@ footer a:hover {
 }
 
 /* ============================================
-   🎀 WISHLIST PAGE
+   WISHLIST
    ============================================ */
 
 .wishlist-card {
@@ -1767,7 +1589,7 @@ footer a:hover {
 }
 
 /* ============================================
-   🔔 TOAST
+   TOAST
    ============================================ */
 
 .Toastify__toast {
@@ -1781,15 +1603,13 @@ footer a:hover {
 }
 
 /* ============================================
-   🔄 SPINNER
+   SPINNER
    ============================================ */
 
-.spinner-border {
-    color: var(--pink-500);
-}
+.spinner-border { color: var(--pink-500); }
 
 /* ============================================
-   ♿ REDUCED MOTION
+   Reduced motion
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1803,7 +1623,7 @@ footer a:hover {
 }
 
 /* ============================================
-   🎀 CUTE MARQUEE BANNER
+   Marquee banner
    ============================================ */
 
 .marquee-banner {
@@ -1839,7 +1659,6 @@ footer a:hover {
     100% { transform: translateX(-50%); }
 }
 
-/* শুধু desktop hover এ pause হবে, mobile এ না */
 @media (hover: hover) and (pointer: fine) {
     .marquee-banner:hover .marquee-content {
         animation-play-state: paused;
@@ -1847,7 +1666,7 @@ footer a:hover {
 }
 
 /* ============================================
-   🎯 DARAZ-STYLE HERO SECTION (BANNERS)
+   SIMPLE HERO (banner slider)
    ============================================ */
 
 .simple-hero-section {
@@ -1868,14 +1687,12 @@ footer a:hover {
     aspect-ratio: 16 / 6;
 }
 
-/* Slider container */
 .simple-banner-slider {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-/* Individual slide */
 .simple-banner-slide {
     position: absolute;
     inset: 0;
@@ -1893,7 +1710,6 @@ footer a:hover {
     z-index: 1;
 }
 
-/* Banner image */
 .hero-banner-img {
     width: 100%;
     height: 100%;
@@ -1902,7 +1718,6 @@ footer a:hover {
     display: block;
 }
 
-/* Button Position - Bottom Center */
 .simple-banner-button {
     position: absolute;
     bottom: 28px;
@@ -1911,7 +1726,6 @@ footer a:hover {
     z-index: 2;
 }
 
-/* Navigation Arrows */
 .simple-banner-nav {
     position: absolute;
     top: 50%;
@@ -1938,15 +1752,9 @@ footer a:hover {
     box-shadow: 0 6px 20px rgba(219, 39, 119, 0.4);
 }
 
-.simple-banner-nav.prev {
-    left: 20px;
-}
+.simple-banner-nav.prev { left: 20px; }
+.simple-banner-nav.next { right: 20px; }
 
-.simple-banner-nav.next {
-    right: 20px;
-}
-
-/* Dots Indicator */
 .simple-banner-dots {
     position: absolute;
     bottom: 16px;
@@ -1979,7 +1787,6 @@ footer a:hover {
     border-radius: 5px;
 }
 
-/* Button Styling - Theme Colors */
 .simple-banner-button .btn-pink {
     background: var(--gradient-pink);
     border: none;
@@ -1997,7 +1804,7 @@ footer a:hover {
 }
 
 /* ============================================
-   ⚡ FLASH SALE SECTION (Daraz-style)
+   FLASH SALE (base)
    ============================================ */
 
 .flash-sale-section {
@@ -2007,7 +1814,6 @@ footer a:hover {
     border-bottom: 1px solid #ffe4ef;
 }
 
-/* Header */
 .flash-sale-header {
     display: flex;
     align-items: center;
@@ -2056,7 +1862,6 @@ footer a:hover {
     border-radius: 999px;
 }
 
-/* Timer */
 .flash-sale-timer {
     display: flex;
     align-items: center;
@@ -2091,7 +1896,6 @@ footer a:hover {
     color: #4b5563;
 }
 
-/* Right side (Shop more + arrows) */
 .flash-sale-right {
     display: flex;
     align-items: center;
@@ -2105,9 +1909,7 @@ footer a:hover {
     text-decoration: none;
 }
 
-.flash-sale-view-all:hover {
-    color: var(--pink-700);
-}
+.flash-sale-view-all:hover { color: var(--pink-700); }
 
 .flash-sale-arrows {
     display: flex;
@@ -2136,10 +1938,7 @@ footer a:hover {
     transform: translateY(-1px);
 }
 
-/* Slider */
-.flash-sale-slider-wrapper {
-    position: relative;
-}
+.flash-sale-slider-wrapper { position: relative; }
 
 .flash-sale-slider {
     display: flex;
@@ -2149,21 +1948,13 @@ footer a:hover {
     scroll-behavior: smooth;
 }
 
-/* scrollbar thin / hidden style */
-.flash-sale-slider::-webkit-scrollbar {
-    height: 6px;
-}
-
-.flash-sale-slider::-webkit-scrollbar-track {
-    background: transparent;
-}
-
+.flash-sale-slider::-webkit-scrollbar { height: 6px; }
+.flash-sale-slider::-webkit-scrollbar-track { background: transparent; }
 .flash-sale-slider::-webkit-scrollbar-thumb {
     background: #fecaca;
     border-radius: 999px;
 }
 
-/* Card (Daraz-style small box) */
 .flash-sale-card {
     flex: 0 0 190px;
     max-width: 190px;
@@ -2183,7 +1974,6 @@ footer a:hover {
     border-color: #fecaca;
 }
 
-/* Image */
 .flash-sale-image-wrapper {
     position: relative;
     background-color: #ffe4f4;
@@ -2195,7 +1985,6 @@ footer a:hover {
     object-fit: cover;
 }
 
-/* Discount badge top-left */
 .flash-sale-discount-badge {
     position: absolute;
     top: 8px;
@@ -2208,7 +1997,6 @@ footer a:hover {
     border-radius: 999px;
 }
 
-/* Info area */
 .flash-sale-info {
     padding: 6px 8px 8px;
     display: flex;
@@ -2226,7 +2014,6 @@ footer a:hover {
     overflow: hidden;
 }
 
-/* Price row */
 .flash-sale-price-row {
     display: flex;
     align-items: baseline;
@@ -2245,10 +2032,7 @@ footer a:hover {
     text-decoration: line-through;
 }
 
-/* Stock bar row */
-.flash-sale-stock-row {
-    margin-top: 2px;
-}
+.flash-sale-stock-row { margin-top: 2px; }
 
 .stock-bar {
     width: 100%;
@@ -2271,9 +2055,8 @@ footer a:hover {
     color: var(--text-muted);
 }
 
-
 /* ============================================
-   📱 MOBILE BOTTOM NAV (Daraz-style base)
+   Mobile bottom nav (base hidden)
    ============================================ */
 
 .mobile-bottom-nav {
@@ -2285,11 +2068,11 @@ footer a:hover {
     background-color: #ffffff;
     border-top: 1px solid var(--border-color);
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
-    display: none; /* default: desktop এ hidden */
+    display: none;
     align-items: center;
     justify-content: space-around;
     z-index: 900;
-    padding-bottom: env(safe-area-inset-bottom); /* iPhone notch support */
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .mb-nav-item {
@@ -2306,27 +2089,16 @@ footer a:hover {
     transition: color 0.2s ease, transform 0.1s ease;
 }
 
-.mb-nav-icon {
-    font-size: 18px;
-}
+.mb-nav-icon { font-size: 18px; }
+.mb-nav-label { line-height: 1; }
 
-.mb-nav-label {
-    line-height: 1;
-}
-
-.mb-nav-item.active {
-    color: var(--pink-600);
-}
-
+.mb-nav-item.active,
 .mb-nav-item.active .mb-nav-icon {
     color: var(--pink-600);
 }
 
-.mb-nav-item:active {
-    transform: scale(0.96);
-}
+.mb-nav-item:active { transform: scale(0.96); }
 
-/* badge for cart / wishlist */
 .mb-nav-badge {
     position: absolute;
     top: 4px;
@@ -2350,3 +2122,83 @@ footer a:hover {
     background: linear-gradient(135deg, #f97316, #ec4899);
 }
 
+/* ============================================
+   🔇 Navbar logo text hide (both desktop + mobile)
+   ============================================ */
+
+.cute-navbar .center-logo .logo-text,
+.cute-navbar .center-logo .logo-label,
+.cute-navbar .center-logo .brand-text,
+.cute-navbar .center-logo small,
+.cute-navbar .center-logo .logo-fallback,
+.cute-navbar .center-logo .logo-container + span,
+.cute-navbar .center-logo .logo-container + small {
+    display: none !important;
+}
+
+/* ============================================
+   🧾 FOR YOU (Daraz-style header) - Desktop/Base
+   ============================================ */
+
+.gg-for-you {
+    background: #ffffff;
+    border-top: 1px solid #f3f4f6;
+}
+
+.gg-for-you__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.gg-for-you__left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.gg-for-you__title {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    position: relative;
+    padding-left: 10px;
+}
+
+.gg-for-you__title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 18px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #f97316, #ec4899);
+}
+
+.gg-for-you__tag {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ef4444;
+    background: #fee2e2;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.gg-for-you__more {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pink-600);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.gg-for-you__more:hover {
+    color: var(--pink-700);
+}
