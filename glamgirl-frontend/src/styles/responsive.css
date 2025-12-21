@@ -724,3 +724,24 @@
         font-size: 1rem;
     }
 }
+
+@media (max-width: 768px) {
+    .gg-plp3__bar{
+        grid-template-columns: 1fr auto auto;
+        gap: 8px;
+    }
+
+    .gg-plp3__action span{
+        display:none; /* super compact like Daraz */
+    }
+
+    .gg-plp3__catgrid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 992px) {
+    .gg-plp3__sortbtn{
+        display:none; /* desktop এ sort button না, filter sheet না */
+    }
+}
