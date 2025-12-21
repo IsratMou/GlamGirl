@@ -27,6 +27,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Wishlist from './pages/Wishlist';
 import FlashSalePage from './pages/FlashSalePage';
+import CategoriesPage from './pages/CategoriesPage';
 
 function App() {
     return (
@@ -45,6 +46,7 @@ function App() {
                                 <Route path="/checkout" element={<Checkout />} />
                                 <Route path="/wishlist" element={<Wishlist />} />
                                 <Route path="/flash-sale" element={<FlashSalePage />} />
+                                <Route path="/categories" element={<CategoriesPage />} />
                             </Routes>
                         </main>
 

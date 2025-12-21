@@ -38,7 +38,6 @@ const Home = () => {
 
     const [loading, setLoading] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [showAllCategories, setShowAllCategories] = useState(false);
 
     // Products + Categories + Recommended load (error-safe)
     useEffect(() => {
@@ -146,13 +145,12 @@ const Home = () => {
         setCurrentSlide(index);
     };
 
-    const visibleCategories = showAllCategories
-        ? categories
-        : categories.slice(0, 6);
+    // ✅ Show more বাদ — সব category auto show
+    const visibleCategories = categories;
 
     const featuredProducts = useMemo(() => products.slice(0, 8), [products]);
 
-    // ✅ FIXED: For You always fills up to 12 items (no more showing only 1)
+    // For You always fills up to 12 items
     const forYouProducts = useMemo(() => {
         const featuredIds = new Set(featuredProducts.map((p) => p.id));
 
@@ -168,15 +166,12 @@ const Home = () => {
             });
         };
 
-        // 1) First: recommended (popular/most bought)
         add(recommended);
 
-        // 2) Fill: products excluding featured
         if (picked.length < 12) {
             add(products.filter((p) => !featuredIds.has(p.id)));
         }
 
-        // 3) Final fill: any remaining products
         if (picked.length < 12) {
             add(products);
         }
@@ -218,7 +213,6 @@ const Home = () => {
                                     className="hero-banner-img"
                                     loading="lazy"
                                 />
-                                {/* Single Button - Bottom Center */}
                                 <div className="simple-banner-button">
                                     <Link
                                         to="/products"
@@ -269,12 +263,20 @@ const Home = () => {
             {/* Flash Sale Section */}
             <FlashSaleSection />
 
-            {/* Categories Section (tight padding) */}
-            <section className="gg-section gg-section--category">
+            {/* Shop by Category (Daraz style, GlamGirl theme) */}
+            <section className="gg-section gg-section--category gg-category">
                 <div className="container">
-                    <h2 className="section-title category-section-title text-center mb-2">
-                        Shop by Category
-                    </h2>
+                    {/* Header */}
+                    <div className="gg-category__header">
+                        <div className="gg-category__left">
+                            <h2 className="gg-category__title">Shop by Category</h2>
+                            <span className="gg-category__pill">Browse</span>
+                        </div>
+
+                        <Link to="/categories" className="gg-category__more">
+                        View all
+                        </Link>
+                    </div>
 
                     {loading ? (
                         <div className="text-center py-4">
@@ -284,43 +286,43 @@ const Home = () => {
                         </div>
                     ) : (
                         <>
-                            <div className="row g-3 category-row">
+                            <div className="row g-2 gg-category__grid">
                                 {visibleCategories.map((category) => {
                                     const imageUrl = category.image;
                                     const initial =
-                                        (category.name || '').charAt(0).toUpperCase() ||
-                                        '?';
+                                        (category.name || '').charAt(0).toUpperCase() || '?';
 
                                     return (
                                         <div
                                             key={category.id}
-                                            className="col-4 col-sm-3 col-md-3 col-lg-2"
+                                        l    className="col-4 col-sm-3 col-md-2 col-lg-1 gg-category__col"
                                         >
                                             <Link
                                                 to={`/products?category=${category.id}`}
-                                                className="text-decoration-none"
+                                                className="gg-category__item"
+                                                aria-label={`Browse ${category.name}`}
                                             >
-                                                <div className="category-card h-100">
-                                                    <div className="category-photo-frame">
-                                                        <div className="category-photo-inner">
+                                                <div className="gg-category__card">
+                                                    <div className="gg-category__icon">
+                                                        <div className="gg-category__icon-inner">
                                                             {imageUrl ? (
                                                                 <img
                                                                     src={imageUrl}
                                                                     alt={category.name}
-                                                                    className="category-photo-image"
+                                                                    className="gg-category__icon-img"
                                                                     loading="lazy"
                                                                 />
                                                             ) : (
-                                                                <span className="category-photo-letter">
+                                                                <span className="gg-category__icon-letter">
                                                                     {initial}
                                                                 </span>
                                                             )}
                                                         </div>
                                                     </div>
 
-                                                    <h5 className="category-name-text mb-1">
+                                                    <div className="gg-category__name">
                                                         {category.name}
-                                                    </h5>
+                                                    </div>
                                                 </div>
                                             </Link>
                                         </div>
@@ -328,26 +330,13 @@ const Home = () => {
                                 })}
                             </div>
 
-                            {/* Show more button */}
-                            {!showAllCategories && categories.length > 6 && (
-                                <div className="text-center mt-3">
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-pink btn-sm px-4"
-                                        onClick={() => setShowAllCategories(true)}
-                                    >
-                                        Show more
-                                    </button>
-                                </div>
-                            )}
+                            <div className="text-center mt-3">
+                                <Link to="/categories" className="btn btn-outline-pink btn-lg">
+                                View All Categories
+                                </Link>
+                            </div>
                         </>
                     )}
-
-                    <div className="text-center mt-3">
-                        <Link to="/products" className="btn btn-outline-pink btn-lg">
-                            View All Categories
-                        </Link>
-                    </div>
                 </div>
             </section>
 

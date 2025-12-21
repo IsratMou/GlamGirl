@@ -692,3 +692,35 @@
         height: 155px;
     }
 }
+
+/* ============================================
+   🧾 CATEGORIES PAGE - Mobile polish
+   ============================================ */
+
+@media (max-width: 768px) {
+    .gg-catpage__title {
+        font-size: 1.25rem;
+    }
+
+    .gg-catpage__subtitle {
+        font-size: 0.84rem;
+    }
+
+    .gg-catpage__chips-wrap {
+        padding: 8px 0;
+    }
+
+    .gg-catpage__chip {
+        font-size: 11px;
+        padding: 7px 10px;
+    }
+
+    .gg-catpage__section {
+        border-radius: 14px;
+        padding: 12px 12px 14px;
+    }
+
+    .gg-catpage__section-title {
+        font-size: 1rem;
+    }
+}
