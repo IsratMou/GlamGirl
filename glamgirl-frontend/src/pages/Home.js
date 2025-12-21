@@ -351,48 +351,55 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Featured Products */}
-            <section className="py-5 bg-light">
+            {/* Featured Products (Daraz-style) */}
+            <section className="gg-section gg-section--tight gg-featured">
                 <div className="container">
-                    <div className="d-flex justify-content-between align-items-center mb-5">
-                        <h2 className="section-title mb-0">Featured Products</h2>
-                        <Link to="/products" className="btn btn-pink">
+                    <div className="gg-featured__header">
+                        <div className="gg-featured__left">
+                            <h2 className="gg-featured__title">Featured Products</h2>
+                            <span className="gg-featured__tag">Top Picks</span>
+                        </div>
+
+                        <Link to="/products" className="gg-featured__more">
                             View All
                         </Link>
                     </div>
 
                     {loading ? (
-                        <div className="text-center py-5">
+                        <div className="text-center py-4">
                             <div className="spinner-border text-pink" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         </div>
+                    ) : products.length === 0 ? (
+                        <div className="text-center py-4">
+                            <p className="text-muted mb-0">
+                                No products found. Add products from admin panel.
+                            </p>
+                        </div>
                     ) : (
-                        <>
-                            <div className="row g-3">
-                                {featuredProducts.map((product) => (
-                                    <ProductCard key={product.id} product={product} />
-                                ))}
-                            </div>
-
-                            {products.length === 0 && (
-                                <div className="text-center py-5">
-                                    <p className="text-muted">
-                                        No products found. Add products from admin panel.
-                                    </p>
-                                </div>
-                            )}
-                        </>
+                        <div className="row g-2 gg-featured__grid">
+                            {featuredProducts.map((product) => (
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                    compact
+                                    wrapperClassName="col-6 col-md-3 col-lg-2"
+                                />
+                            ))}
+                        </div>
                     )}
                 </div>
             </section>
 
             {/* For You (Most Bought / Popular) */}
-            <section className="gg-section gg-section--tight gg-for-you">
+            <section className="gg-section gg-section--tight gg-for-you" aria-labelledby="for-you-title">
                 <div className="container">
                     <div className="gg-for-you__header">
                         <div className="gg-for-you__left">
-                            <h2 className="gg-for-you__title">For You</h2>
+                            <h2 id="for-you-title" className="gg-for-you__title">
+                                For You
+                            </h2>
                             <span className="gg-for-you__tag">Popular</span>
                         </div>
 
@@ -407,10 +414,19 @@ const Home = () => {
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         </div>
+                    ) : forYouProducts.length === 0 ? (
+                        <div className="text-center py-4">
+                            <p className="text-muted mb-0">No recommendations right now.</p>
+                        </div>
                     ) : (
-                        <div className="row g-3">
+                        <div className="row g-2 gg-for-you__grid">
                             {forYouProducts.map((product) => (
-                                <ProductCard key={product.id} product={product} />
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                    compact
+                                    wrapperClassName="col-6 col-md-3 col-lg-2"
+                                />
                             ))}
                         </div>
                     )}

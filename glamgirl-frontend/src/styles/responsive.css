@@ -646,3 +646,49 @@
         height: 2px;
     }
 }
+
+@media (max-width: 768px) {
+    .product-card--compact .product-image {
+        height: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-card--compact .product-image {
+        height: 150px;
+    }
+}
+
+/* ============================================
+   ⭐ FEATURED PRODUCTS - Mobile tuning
+   ============================================ */
+
+@media (max-width: 768px) {
+    .gg-featured__title {
+        font-size: 1.05rem;
+    }
+
+    .gg-featured__title::after {
+        width: 58px;
+        height: 2.5px;
+    }
+
+    .gg-featured__tag {
+        font-size: 9px;
+        padding: 4px 10px;
+    }
+
+    .gg-featured__more {
+        font-size: 12px;
+    }
+
+    .gg-featured .product-card--compact .product-image {
+        height: 165px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gg-featured .product-card--compact .product-image {
+        height: 155px;
+    }
+}

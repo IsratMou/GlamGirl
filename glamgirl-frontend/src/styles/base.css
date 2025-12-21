@@ -2220,3 +2220,104 @@ footer a:hover { color: var(--pink-400); }
 .gg-for-you__more:hover::after {
     transform: translateX(4px);
 }
+
+/* For You compact tiles */
+.product-card--compact {
+    min-height: 0;
+}
+
+.product-card--compact .product-image {
+    height: 170px;
+}
+
+/* ============================================
+   ⭐ FEATURED PRODUCTS (Daraz-style)
+   ============================================ */
+
+.gg-featured {
+    background: #fafafa;
+}
+
+.gg-featured__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.gg-featured__left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.gg-featured__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    position: relative;
+    line-height: 1.1;
+}
+
+.gg-featured__title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 74px;
+    height: 3px;
+    background: linear-gradient(90deg, #ec4899 0%, #f97316 100%);
+    border-radius: 999px;
+}
+
+.gg-featured__tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    padding: 5px 12px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.gg-featured__more {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pink-600);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.gg-featured__more::after {
+    content: "›";
+    font-size: 16px;
+    line-height: 1;
+    transform: translateY(-1px);
+}
+
+.gg-featured__more:hover {
+    color: var(--pink-700);
+    transform: translateX(2px);
+}
+
+/* Featured-এর ভিতরে compact tile feel */
+.gg-featured .product-card--compact {
+    min-height: 0;
+}
+
+.gg-featured .product-card--compact .product-image {
+    height: 180px;
+}

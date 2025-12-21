@@ -12,7 +12,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { toast } from 'react-toastify';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3', compact = false }) => {
     const { addToCart } = useCart();
     const { isInWishlist, toggleWishlist } = useWishlist();
     const navigate = useNavigate();
@@ -71,12 +71,12 @@ const ProductCard = ({ product }) => {
             : 0;
 
     return (
-        <div className="col-6 col-md-4 col-lg-3 mb-3">
+        <div className={wrapperClassName}>
             <Link
                 to={`/product/${product.id}`}
                 className="text-decoration-none"
             >
-                <div className="product-card h-100">
+                <div className={`product-card h-100 ${compact ? 'product-card--compact' : ''}`}>
                     {/* Image */}
                     <div className="product-image-wrapper">
                         <img
