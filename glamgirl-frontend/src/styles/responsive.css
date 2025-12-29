@@ -855,3 +855,83 @@
 @media (max-width: 768px){
   .gg-pdp3__ctaRow{ grid-template-columns: 1fr; }
 }
+
+/* ============================================
+   PERF PATCH: disable heavy "enter" animations on mobile
+   (UI/layout unchanged, only removes load animations)
+   ============================================ */
+@media (max-width: 768px) {
+  .section-title.category-section-title {
+    animation: none !important;
+  }
+
+  .category-card {
+    animation: none !important;
+  }
+
+  .flash-sale-card {
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   PERF PATCH: marquee cheaper on mobile
+   ============================================ */
+@media (max-width: 768px) {
+  .marquee-content {
+    /* will-change দীর্ঘ সময় থাকলে memory/cpu বেশি খায় */
+    will-change: auto !important;
+
+    /* same effect, fewer updates */
+    animation-duration: 26s;
+  }
+}
+
+/* ============================================
+   PERF PATCH: isolate horizontal scrollers
+   ============================================ */
+@media (max-width: 768px) {
+  .flash-sale-slider,
+  .gg-catpage__chips,
+  .gg-plp3__chips,
+  .gg-pdp3__thumbsMobile {
+    contain: paint;
+    overscroll-behavior-x: contain;
+  }
+}
+
+/* ============================================
+   PERF PATCH: PDP sticky bar isolation
+   ============================================ */
+@media (max-width: 768px) {
+  .gg-pdp3__sticky {
+    contain: layout paint;
+  }
+}
+
+/* ============================================
+   PERF PATCH: faster tap handling on mobile
+   ============================================ */
+@media (max-width: 768px) {
+  .icon-btn,
+  .nav-pill,
+  .product-cart-btn,
+  .product-buy-btn,
+  .flash-arrow-btn,
+  .mb-nav-item,
+  a,
+  button {
+    touch-action: manipulation;
+  }
+}
+
+/* ============================================
+   PERF PATCH: disable hover-only work on touch devices
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+  .simple-banner-nav:hover,
+  .simple-dot:hover,
+  .category-card:hover .category-photo-frame {
+    transform: none !important;
+  }
+}

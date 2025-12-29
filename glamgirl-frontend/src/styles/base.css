@@ -2,7 +2,6 @@
    GLAMGIRL - Base CSS (Desktop/Common)
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* ============================================
    CSS Variables
@@ -1170,7 +1169,12 @@ body {
     border: 1.5px solid var(--pink-300);
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
+
+    /* ✅ instead of transition: all */
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .product-cart-btn:hover:not(:disabled) {
@@ -1201,8 +1205,14 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+
+    /* ✅ instead of transition: all */
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
 }
 
 .product-buy-btn:hover:not(:disabled) {
@@ -1741,7 +1751,11 @@ footer a:hover { color: var(--pink-400); }
     color: var(--pink-600);
     cursor: pointer;
     z-index: 10;
-    transition: all 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -1772,7 +1786,11 @@ footer a:hover { color: var(--pink-400); }
     background: rgba(255, 255, 255, 0.5);
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition:     
+        background-color 0.3s ease,
+        transform 0.3s ease,
+        width 0.3s ease,
+        border-radius 0.3s ease;
     padding: 0;
 }
 
@@ -3244,7 +3262,7 @@ footer a:hover { color: var(--pink-400); }
 
 /* ------------------------------
    ProductCard synced slideshow
-   ------------------------------ *
+   ------------------------------ */
 
 
 /* ------------------------------
@@ -3315,4 +3333,73 @@ footer a:hover { color: var(--pink-400); }
   display:grid;
   place-items:center;
   z-index:2;
+}
+
+/* ============================================
+   PERF PATCH: isolate card rendering
+   (no UI change)
+   ============================================ */
+
+.product-card,
+.wishlist-card,
+.flash-sale-card,
+.category-card {
+    contain: layout paint;
+}
+
+.product-image-wrapper,
+.flash-sale-image-wrapper {
+    contain: paint;
+}
+
+/* ============================================
+   PERF PATCH: lazy paint for repeated cards
+   ============================================ */
+@supports (content-visibility: auto) {
+    .product-card {
+        content-visibility: auto;
+        contain-intrinsic-size: 380px;
+    }
+
+    .wishlist-card {
+        content-visibility: auto;
+        contain-intrinsic-size: 320px;
+    }
+
+    .flash-sale-card {
+        content-visibility: auto;
+        contain-intrinsic-size: 260px;
+    }
+
+    .category-card {
+        content-visibility: auto;
+        contain-intrinsic-size: 170px;
+    }
+}
+
+/* ============================================
+   PERF PATCH: marquee smoother
+   ============================================ */
+.marquee-content {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+
+/* ============================================
+   PERF PATCH: avoid hover-work on touch devices
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+    .product-card:hover,
+    .wishlist-card:hover,
+    .flash-sale-card:hover,
+    .category-card:hover,
+    .icon-btn:hover,
+    .nav-pill:hover,
+    .social-links a:hover {
+        transform: none !important;
+    }
+
+    .product-card:hover .product-image {
+        transform: none !important;
+    }
 }
