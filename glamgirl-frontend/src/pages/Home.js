@@ -21,11 +21,11 @@ import FlashSaleSection from '../components/FlashSaleSection';
 
 // Hero Banner Images - public folder থেকে load হবে
 const bannerImages = [
-    { id: 1, image: '/banner1.png', buttonText: 'Shop Now' },
-    { id: 2, image: '/banner2.png', buttonText: 'Buy Now' },
-    { id: 3, image: '/banner3.png', buttonText: 'Shop Now' },
-    { id: 4, image: '/banner4.png', buttonText: 'Buy Now' },
-    { id: 5, image: '/banner5.png', buttonText: 'Shop Now' },
+    { id: 1, image: '/banner1.webp', buttonText: 'Shop Now' },
+    { id: 2, image: '/banner2.webp', buttonText: 'Buy Now' },
+    { id: 3, image: '/banner3.webp', buttonText: 'Shop Now' },
+    { id: 4, image: '/banner4.webp', buttonText: 'Buy Now' },
+    { id: 5, image: '/banner5.webp', buttonText: 'Shop Now' },
 ];
 
 const Home = () => {
