@@ -1,25 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-// Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Custom CSS
 import './styles/base.css';
 import './styles/responsive.css';
 
-// Context
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 
-// Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import MobileBottomNav from './components/MobileBottomNav';
 
-// Pages
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
@@ -30,6 +25,18 @@ import FlashSalePage from './pages/FlashSalePage';
 import CategoriesPage from './pages/CategoriesPage';
 
 function App() {
+    // ✅ global synced time (no React re-render, only CSS var update)
+    useEffect(() => {
+        const D = 4; // seconds (2 images => 2s each)
+        const tick = () => {
+            const t = (Date.now() / 1000) % D;
+            document.documentElement.style.setProperty('--gg-sync', t.toFixed(3));
+        };
+        tick();
+        const id = setInterval(tick, 250);
+        return () => clearInterval(id);
+    }, []);
+
     return (
         <CartProvider>
             <WishlistProvider>
@@ -51,8 +58,6 @@ function App() {
                         </main>
 
                         <Footer />
-
-                        {/* ✅ Mobile bottom nav - শুধু mobile এ show করবো CSS দিয়ে */}
                         <MobileBottomNav />
 
                         <ToastContainer

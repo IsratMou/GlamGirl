@@ -745,3 +745,113 @@
         display:none; /* desktop এ sort button না, filter sheet না */
     }
 }
+
+@media (max-width: 768px){
+  .gg-pdp3__gallery{
+    grid-template-columns: 1fr;
+  }
+
+  .gg-pdp3__thumbs{ display:none; }
+
+  .gg-pdp3__thumbsMobile{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width:none;
+    padding-top:10px;
+  }
+  .gg-pdp3__thumbsMobile::-webkit-scrollbar{ display:none; }
+
+  .gg-pdp3__thumbM{
+    border:1px solid var(--border-color);
+    background:#fff;
+    border-radius:12px;
+    padding:4px;
+    flex:0 0 auto;
+    cursor:pointer;
+  }
+  .gg-pdp3__thumbM img{
+    width:76px;
+    height:76px;
+    border-radius:10px;
+    object-fit:cover;
+    display:block;
+  }
+  .gg-pdp3__thumbM.active{
+    border-color: var(--pink-400);
+    box-shadow: 0 0 0 3px rgba(236,72,153,0.12);
+  }
+
+  .gg-pdp3__trust{
+    grid-template-columns: 1fr;
+  }
+
+  .gg-pdp3__sticky{
+    display:flex;
+    position: sticky;
+    bottom: 0;
+    margin-top: 12px;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255,255,255,0.96);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
+    z-index: 5;
+  }
+
+  .gg-pdp3__stickyPrice{ min-width: 90px; }
+  .gg-pdp3__stickyMain{
+    font-weight:900;
+    color: var(--pink-600);
+    font-size:1.1rem;
+    line-height:1.1;
+  }
+  .gg-pdp3__stickyOld{
+    font-size:0.85rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+
+  .gg-pdp3__stickyQty{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background: var(--pink-50);
+    border: 1px solid var(--pink-200);
+    border-radius: 999px;
+    padding: 6px 10px;
+  }
+  .gg-pdp3__stickyQty button{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:none;
+    background:#fff;
+    display:grid;
+    place-items:center;
+  }
+  .gg-pdp3__stickyQty span{
+    font-weight:900;
+    min-width:18px;
+    text-align:center;
+  }
+
+  .gg-pdp3__stickyBtn{
+    margin-left:auto;
+    border:none;
+    border-radius:12px;
+    padding:10px 14px;
+    font-weight:900;
+    color:#fff;
+    background: var(--gradient-pink);
+    min-width:110px;
+  }
+  .gg-pdp3__stickyBtn:disabled{ opacity:0.55; }
+}
+
+@media (max-width: 768px){
+  .gg-pdp3__ctaRow{ grid-template-columns: 1fr; }
+}

@@ -12,7 +12,11 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { toast } from 'react-toastify';
 
-const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3', compact = false }) => {
+const ProductCard = ({
+    product,
+    wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3',
+    compact = false,
+}) => {
     const { addToCart } = useCart();
     const { isInWishlist, toggleWishlist } = useWishlist();
     const navigate = useNavigate();
@@ -21,11 +25,8 @@ const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3
         e.preventDefault();
         e.stopPropagation();
         const result = await addToCart(product.id, 1);
-        if (result.success) {
-            toast.success('Added to cart! 🛒');
-        } else {
-            toast.error(result.error);
-        }
+        if (result.success) toast.success('Added to cart! 🛒');
+        else toast.error(result.error);
     };
 
     const handleBuyNow = async (e) => {
@@ -44,17 +45,15 @@ const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3
         e.preventDefault();
         e.stopPropagation();
         const result = toggleWishlist(product);
-        if (result.success) {
-            toast.success(result.message);
-        }
+        if (result.success) toast.success(result.message);
     };
 
     const imageUrl =
         product.image ||
         'https://via.placeholder.com/400x400?text=GlamGirl+Product';
+
     const inWishlist = isInWishlist(product.id);
 
-    // Flash sale / discount logic
     const hasFlashDiscount =
         product.is_flash_sale &&
         product.flash_price &&
@@ -70,23 +69,36 @@ const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3
             ? product.discount_percent
             : 0;
 
+    const preview = Array.isArray(product.images_preview) ? product.images_preview : [];
+    const baseImg = preview[0] || imageUrl;
+    const overlayImg = preview[1] || null;
+
     return (
         <div className={wrapperClassName}>
-            <Link
-                to={`/product/${product.id}`}
-                className="text-decoration-none"
-            >
+            <Link to={`/product/${product.id}`} className="text-decoration-none">
                 <div className={`product-card h-100 ${compact ? 'product-card--compact' : ''}`}>
                     {/* Image */}
-                    <div className="product-image-wrapper">
+                    <div className={`product-image-wrapper gg-cardslide ${overlayImg ? 'multi' : 'single'}`}>
+                        {/* base image defines height (important) */}
                         <img
-                            src={imageUrl}
+                            src={baseImg}
                             alt={product.name}
-                            className="product-image"
+                            className="product-image gg-cardimg gg-cardimg--base"
                             loading="lazy"
+                            decoding="async"
                         />
 
-                        {/* Flash sale badge */}
+                        {/* overlay (optional) */}
+                        {overlayImg && (
+                            <img
+                                src={overlayImg}
+                                alt={product.name}
+                                className="product-image gg-cardimg gg-cardimg--overlay"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        )}
+
                         {hasFlashDiscount && (
                             <span className="product-flash-badge">
                                 <FaBolt className="me-1" />
@@ -94,25 +106,22 @@ const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3
                             </span>
                         )}
 
-                        {/* Discount badge */}
                         {discountPercent > 0 && (
                             <span className="product-discount-pill">
                                 -{discountPercent}%
                             </span>
                         )}
 
-                        {/* Wishlist Button */}
                         <button
                             className={`wishlist-btn ${inWishlist ? 'active' : ''}`}
                             onClick={handleWishlist}
+                            aria-label="Toggle wishlist"
                         >
                             {inWishlist ? <FaHeart /> : <FaRegHeart />}
                         </button>
 
                         {product.stock <= 0 && (
-                            <div className="out-of-stock-badge">
-                                Out of Stock
-                            </div>
+                            <div className="out-of-stock-badge">Out of Stock</div>
                         )}
                     </div>
 
@@ -126,14 +135,12 @@ const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3
 
                         <h6 className="product-title">{product.name}</h6>
 
-                        {/* Rating */}
                         <div className="product-rating-row mb-1">
                             <FaStar className="text-warning me-1" />
                             <small className="text-muted">4.5</small>
                             <small className="text-muted ms-1">(120)</small>
                         </div>
 
-                        {/* Price row */}
                         <div className="product-price-row mb-2">
                             <span className="product-price-main">
                                 ৳{currentPrice.toFixed(0)}
@@ -145,7 +152,6 @@ const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3
                             )}
                         </div>
 
-                        {/* ✅ Button Group - Custom CSS */}
                         <div className="product-btn-group">
                             <button
                                 className="product-cart-btn"
@@ -155,7 +161,7 @@ const ProductCard = ({ product, wrapperClassName = 'col-6 col-md-4 col-lg-3 mb-3
                                 <FaCartPlus />
                                 <span>Add to Cart</span>
                             </button>
-                            
+
                             <button
                                 className="product-buy-btn"
                                 onClick={handleBuyNow}
