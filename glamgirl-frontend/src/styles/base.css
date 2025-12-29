@@ -3240,51 +3240,12 @@ footer a:hover { color: var(--pink-400); }
 .gg-pdp3__sticky{ display:none; }
 
 
-:root { --gg-sync: 0; }
+
 
 /* ------------------------------
    ProductCard synced slideshow
-   ------------------------------ */
+   ------------------------------ *
 
-.gg-cardslide { position: relative; }
-
-.gg-cardslide .gg-cardimg--overlay{
-  position:absolute;
-  inset:0;
-  opacity:0;
-  will-change: opacity;
-  pointer-events:none;
-}
-
-/* overlay fades in/out (2 images) */
-@keyframes ggOverlayFade {
-  0%   { opacity: 0; }
-  10%  { opacity: 1; }
-  40%  { opacity: 1; }
-  50%  { opacity: 0; }
-  100% { opacity: 0; }
-}
-
-.gg-cardslide.multi .gg-cardimg--overlay{
-  animation: ggOverlayFade 4s linear infinite;
-  animation-delay: calc(var(--gg-sync) * -1s);
-}
-
-/* single image synced gentle movement */
-@keyframes ggKen {
-  from { transform: scale(1); }
-  to   { transform: scale(1.06); }
-}
-.gg-cardslide.single .gg-cardimg--base{
-  animation: ggKen 4s ease-in-out infinite alternate;
-  animation-delay: calc(var(--gg-sync) * -1s);
-}
-
-/* reduce motion */
-@media (prefers-reduced-motion: reduce){
-  .gg-cardslide .gg-cardimg--overlay{ animation:none !important; opacity:0 !important; }
-  .gg-cardslide.single .gg-cardimg--base{ animation:none !important; }
-}
 
 /* ------------------------------
    PDP enhancements

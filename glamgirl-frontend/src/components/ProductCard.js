@@ -48,9 +48,12 @@ const ProductCard = ({
         if (result.success) toast.success(result.message);
     };
 
-    const imageUrl =
-        product.image ||
+    const fallbackImg =
         'https://via.placeholder.com/400x400?text=GlamGirl+Product';
+
+    // ✅ only ONE image now (no overlay, no slideshow)
+    const preview = Array.isArray(product.images_preview) ? product.images_preview : [];
+    const cardImg = preview[0] || product.image || fallbackImg;
 
     const inWishlist = isInWishlist(product.id);
 
@@ -69,35 +72,19 @@ const ProductCard = ({
             ? product.discount_percent
             : 0;
 
-    const preview = Array.isArray(product.images_preview) ? product.images_preview : [];
-    const baseImg = preview[0] || imageUrl;
-    const overlayImg = preview[1] || null;
-
     return (
         <div className={wrapperClassName}>
             <Link to={`/product/${product.id}`} className="text-decoration-none">
                 <div className={`product-card h-100 ${compact ? 'product-card--compact' : ''}`}>
                     {/* Image */}
-                    <div className={`product-image-wrapper gg-cardslide ${overlayImg ? 'multi' : 'single'}`}>
-                        {/* base image defines height (important) */}
+                    <div className="product-image-wrapper">
                         <img
-                            src={baseImg}
+                            src={cardImg}
                             alt={product.name}
-                            className="product-image gg-cardimg gg-cardimg--base"
+                            className="product-image"
                             loading="lazy"
                             decoding="async"
                         />
-
-                        {/* overlay (optional) */}
-                        {overlayImg && (
-                            <img
-                                src={overlayImg}
-                                alt={product.name}
-                                className="product-image gg-cardimg gg-cardimg--overlay"
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        )}
 
                         {hasFlashDiscount && (
                             <span className="product-flash-badge">
