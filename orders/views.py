@@ -11,12 +11,18 @@ from cart.models import Cart, CartItem
 
 
 def get_cart_by_session(request):
-    """Session থেকে cart নিয়ে আসো"""
+    """Cart নিয়ে আসো — user cart first, then session fallback"""
+    if request.user.is_authenticated:
+        try:
+            return request.user.cart
+        except Exception:
+            pass
+
     session_key = request.session.session_key
     if not session_key:
         return None
     try:
-        return Cart.objects.get(session_key=session_key)
+        return Cart.objects.get(session_key=session_key, user__isnull=True)
     except Cart.DoesNotExist:
         return None
 
@@ -72,7 +78,7 @@ def create_order(request):
                 order=order,
                 product=cart_item.product,
                 product_name=cart_item.product.name,
-                product_price=cart_item.product.price,
+                product_price=cart_item.product.get_current_price(),
                 quantity=cart_item.quantity,
             )
 
@@ -96,6 +102,8 @@ def order_detail(request, order_id):
     """
     📄 Order details দেখাও
     GET /api/orders/<order_id>/
+    Admin: sees any order.
+    Customer: only sees their own order (matched by user account or email).
     """
     try:
         order = Order.objects.get(id=order_id)
@@ -105,6 +113,19 @@ def order_detail(request, order_id):
             status=status.HTTP_404_NOT_FOUND
         )
 
+    # Permission check: must be admin, the linked user, or matching email
+    is_admin = request.user.is_authenticated and request.user.is_staff
+    is_owner = (
+        (request.user.is_authenticated and order.user == request.user)
+        or (request.data.get('email') == order.customer_email)  # guest lookup
+    )
+
+    if not is_admin and not is_owner:
+        return Response(
+            {'error': 'You do not have permission to view this order.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
     serializer = OrderSerializer(order)
     return Response(serializer.data)
 
@@ -112,9 +133,15 @@ def order_detail(request, order_id):
 @api_view(['GET'])
 def order_list(request):
     """
-    📋 সব orders দেখাও (Admin এর জন্য)
+    📋 সব orders দেখাও — Admin only
     GET /api/orders/
     """
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return Response(
+            {'error': 'Admin access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
     orders = Order.objects.all()
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
@@ -123,8 +150,10 @@ def order_list(request):
 @api_view(['GET'])
 def track_order(request, order_id):
     """
-    🚚 Order track করো
+    🚚 Order track করো — limited public info (status only, no customer PII)
     GET /api/orders/track/<order_id>/
+    Anyone who knows the order ID can check its status.
+    Full customer details are never exposed here.
     """
     try:
         order = Order.objects.get(id=order_id)
@@ -141,4 +170,5 @@ def track_order(request, order_id):
         'is_paid': order.is_paid,
         'created_at': order.created_at,
         'updated_at': order.updated_at,
+        # ✅ No customer_name, email, phone, address — safe to expose
     })

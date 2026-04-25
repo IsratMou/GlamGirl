@@ -5,7 +5,7 @@ import { getProduct } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { toast } from 'react-toastify';
 
-const FALLBACK_IMG = 'https://via.placeholder.com/700x700?text=No+Image';
+const FALLBACK_IMG = '/no-image.svg';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -215,10 +215,6 @@ const ProductDetail = () => {
 
                     <h1 className="gg-pdp3__title">{product.name}</h1>
 
-                    <div className="gg-pdp3__meta">
-                        <span className="gg-pdp3__rating">★ 4.5</span>
-                        <span className="gg-pdp3__muted">(120 reviews)</span>
-                    </div>
 
                     <div className="gg-pdp3__priceBox">
                         <div className="gg-pdp3__priceRow">

@@ -23,12 +23,36 @@ const Checkout = () => {
         note: ''
     });
 
+    // ✅ Phone validation (Bangladesh: 01[3-9]XXXXXXXX)
+    const BD_PHONE_REGEX = /^01[3-9]\d{8}$/;
+    const [phoneError, setPhoneError] = useState('');
+
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+
+        // Live validation for phone field
+        if (name === 'customer_phone') {
+            const normalised = value.replace(/[\s\-()]/g, '');
+            if (normalised && !BD_PHONE_REGEX.test(normalised)) {
+                setPhoneError('Enter a valid BD number (e.g. 01XXXXXXXXX)');
+            } else {
+                setPhoneError('');
+            }
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Block submit if phone is invalid
+        const normalised = formData.customer_phone.replace(/[\s\-()]/g, '');
+        if (!BD_PHONE_REGEX.test(normalised)) {
+            setPhoneError('Enter a valid BD number (e.g. 01XXXXXXXXX)');
+            toast.error('Please enter a valid phone number.');
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -36,11 +60,17 @@ const Checkout = () => {
             if (response.data.order) {
                 setOrderId(response.data.order.id);
                 setOrderPlaced(true);
-                fetchCart(); // Refresh cart (will be empty now)
+                fetchCart();
                 toast.success('Order placed successfully! 🎉');
             }
         } catch (error) {
-            toast.error(error.response?.data?.error || 'Failed to place order');
+            const errData = error.response?.data;
+            // Surface field-level errors from DRF if present
+            const msg =
+                errData?.customer_phone?.[0] ||
+                errData?.error ||
+                'Failed to place order';
+            toast.error(msg);
         } finally {
             setLoading(false);
         }
@@ -108,13 +138,16 @@ const Checkout = () => {
                                     <label className="form-label">Phone Number *</label>
                                     <input 
                                         type="tel" 
-                                        className="form-control" 
+                                        className={`form-control ${phoneError ? 'is-invalid' : ''}`}
                                         name="customer_phone"
                                         value={formData.customer_phone}
                                         onChange={handleChange}
                                         placeholder="01XXXXXXXXX"
                                         required 
                                     />
+                                    {phoneError && (
+                                        <div className="invalid-feedback">{phoneError}</div>
+                                    )}
                                 </div>
                             </div>
 

@@ -295,7 +295,7 @@ const Home = () => {
                                     return (
                                         <div
                                             key={category.id}
-                                        l    className="col-4 col-sm-3 col-md-2 col-lg-1 gg-category__col"
+                                             className="col-4 col-sm-3 col-md-2 col-lg-1 gg-category__col"
                                         >
                                             <Link
                                                 to={`/products?category=${category.id}`}

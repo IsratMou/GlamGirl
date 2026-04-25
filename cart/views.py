@@ -9,13 +9,46 @@ from products.models import Product
 
 
 def get_or_create_cart(request):
-    """Session based cart তৈরি বা get করো"""
-    if not request.session.session_key:
-        request.session.create()
+    """
+    Smart cart lookup:
+    - Authenticated users  → persistent Cart linked to their User account.
+    - Anonymous users      → session-based Cart (existing behaviour).
+    - If a user logs in while a guest cart exists, the guest items are merged
+      into their user cart automatically so nothing is lost.
+    """
+    if request.user.is_authenticated:
+        # --- User cart (persistent across sessions / devices) ---
+        user_cart, _ = Cart.objects.get_or_create(user=request.user)
 
-    session_key = request.session.session_key
-    cart, created = Cart.objects.get_or_create(session_key=session_key)
-    return cart
+        # Merge any existing guest cart for this session
+        session_key = request.session.session_key
+        if session_key:
+            try:
+                guest_cart = Cart.objects.get(session_key=session_key, user__isnull=True)
+                # Move each guest item into the user cart
+                for guest_item in guest_cart.items.all():
+                    existing = user_cart.items.filter(product=guest_item.product).first()
+                    if existing:
+                        # Accumulate quantity, but don't exceed stock
+                        new_qty = existing.quantity + guest_item.quantity
+                        existing.quantity = min(new_qty, guest_item.product.stock)
+                        existing.save()
+                    else:
+                        guest_item.cart = user_cart
+                        guest_item.save()
+                guest_cart.delete()  # Remove the now-empty guest cart
+            except Cart.DoesNotExist:
+                pass  # No guest cart to merge — that's fine
+
+        return user_cart
+
+    else:
+        # --- Guest / anonymous cart (session-based) ---
+        if not request.session.session_key:
+            request.session.create()
+        session_key = request.session.session_key
+        cart, _ = Cart.objects.get_or_create(session_key=session_key, user__isnull=True)
+        return cart
 
 
 @api_view(['GET'])

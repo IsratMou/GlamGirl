@@ -1,9 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import User
 from products.models import Product
 
 
 class Cart(models.Model):
-    session_key = models.CharField(max_length=100)
+    # Authenticated users get a persistent user-linked cart
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='cart',
+    )
+    # Anonymous / guest users get a session-based cart
+    session_key = models.CharField(max_length=100, blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

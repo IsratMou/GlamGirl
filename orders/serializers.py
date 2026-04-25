@@ -70,3 +70,28 @@ class CreateOrderSerializer(serializers.Serializer):
     postal_code = serializers.CharField(max_length=10, required=False, allow_blank=True)
     payment_method = serializers.ChoiceField(choices=Order.PAYMENT_CHOICES)
     note = serializers.CharField(required=False, allow_blank=True)
+
+    def validate_customer_phone(self, value):
+        """
+        Bangladesh mobile number validation.
+        Valid formats: 01XXXXXXXXX (11 digits, operator digit 3-9)
+        Also accepts +8801XXXXXXXXX or 8801XXXXXXXXX — normalised to 01XXXXXXXXX.
+        """
+        import re
+
+        # Strip whitespace and common separators
+        phone = re.sub(r'[\s\-\(\)]', '', value)
+
+        # Normalise +880 / 880 country code prefix → local format
+        if phone.startswith('+880'):
+            phone = '0' + phone[4:]
+        elif phone.startswith('880') and len(phone) == 13:
+            phone = '0' + phone[3:]
+
+        # Must match: 01[3-9]XXXXXXXX  (11 digits)
+        if not re.fullmatch(r'01[3-9]\d{8}', phone):
+            raise serializers.ValidationError(
+                'Enter a valid Bangladesh phone number (e.g. 01XXXXXXXXX).'
+            )
+
+        return phone  # Return normalised value
